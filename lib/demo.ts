@@ -1,0 +1,48 @@
+import type { Analysis, Article, Company, Region, Sentiment, Source } from "./types.ts";
+
+const createdAt = "2026-09-01T09:00:00.000Z";
+export const demoCompany: Company = { id: "demo-aster", name: "Aster Mobility", domain: "aster.example.com", industry: "Electric mobility", aliases: ["Aster Mobility", "ஆஸ்டர் மொபிலிட்டி"], description: "Fictional company used to demonstrate regional and global news intelligence.", demo: true, createdAt };
+export const initialCompanies: Company[] = [
+  { id: "infosys", name: "Infosys", domain: "infosys.com", aliases: ["Infosys Limited", "இன்ஃபோசிஸ்", "இன்போசிஸ்"], description: "Track coverage of Infosys across your selected sources." },
+  { id: "tcs", name: "Tata Consultancy Services", domain: "tcs.com", aliases: ["TCS", "டிசிஎஸ்", "டாடா கன்சல்டன்சி"], description: "Track coverage of Tata Consultancy Services." },
+  { id: "wipro", name: "Wipro", domain: "wipro.com", aliases: ["Wipro Limited", "விப்ரோ"], description: "Track coverage of Wipro." },
+  { id: "zoho", name: "Zoho", domain: "zoho.com", aliases: ["Zoho Corporation", "ஜோஹோ", "சோஹோ"], description: "Track coverage of Zoho." },
+  { id: "hcltech", name: "HCLTech", domain: "hcltech.com", aliases: ["HCL Technologies", "HCL Tech", "எச்சிஎல்"], description: "Track coverage of HCLTech." },
+].map(c => ({ ...c, industry: "Technology", demo: false, createdAt }));
+
+const seedSources: [string, string, string, Region, string][] = [
+  ["et-cfo", "ET CFO", "https://cfo.economictimes.indiatimes.com/rss/topstories", "India", "en"],
+  ["et-tech", "ET Government · Technology", "https://government.economictimes.indiatimes.com/rss/technology", "India", "en"],
+  ["indian-express", "The Indian Express · Business", "https://indianexpress.com/section/business/feed/", "India", "en"],
+  ["bbc-business", "BBC · Business", "https://feeds.bbci.co.uk/news/business/rss.xml", "Global", "en"],
+  ["bbc-tech", "BBC · Technology", "https://feeds.bbci.co.uk/news/technology/rss.xml", "Global", "en"],
+  ["oneindia-ta", "Oneindia Tamil", "https://tamil.oneindia.com/rss/feeds/oneindia-tamil-fb.xml", "Tamil Nadu", "ta"],
+  ["oneindia-tech", "Oneindia Tamil · Technology", "https://tamil.oneindia.com/rss/feeds/tamil-technology-fb.xml", "Tamil Nadu", "ta"],
+  ["goodreturns-ta", "Goodreturns Tamil · Business", "https://tamil.goodreturns.in/rss/feeds/tamil-money-news-fb.xml", "Tamil Nadu", "ta"],
+];
+export const initialSources: Source[] = seedSources.map(([id, name, url, region, language]) => ({ id, name, url, region, language, kind: "rss", enabled: true, status: "unfetched", lastFetchedAt: null, error: null }));
+
+type DemoStory = { title: string; text: string; day: number; source: string; region: Region; event: string; tone: Sentiment; impact: Analysis["impacts"]; uncertainty: string; cluster?: string; translation?: string };
+const stories: DemoStory[] = [
+  { title: "Aster Mobility opens a battery research centre in Chennai", text: "Aster Mobility announced a battery research centre in Chennai on September 6. The company said the facility would focus on thermal safety testing and employ 120 researchers over two years. The hiring figure is a company target, not a verified headcount.", day: 6, source: "Business Dispatch (demo)", region: "India", event: "Product & expansion", tone: "positive", impact: [{ stakeholder: "Employees", direction: "positive", explanation: "The planned research roles could expand local technical employment if hiring targets are met." }], uncertainty: "Company announcement; hiring and research outcomes have not been independently verified.", cluster: "demo-research" },
+  { title: "Chennai battery centre planned by Aster Mobility", text: "Aster Mobility announced a battery research centre in Chennai on September 6. The company said the facility would focus on thermal safety testing and employ 120 researchers over two years. This article repeats the company's announcement without additional reporting.", day: 6, source: "Market Brief (demo)", region: "India", event: "Product & expansion", tone: "positive", impact: [], uncertainty: "Repeats the same announcement. This is not a second independent confirmation.", cluster: "demo-research" },
+  { title: "ஆஸ்டர் மொபிலிட்டி தொழிற்சாலை அருகே நீர் பயன்பாடு குறித்து கேள்வி", text: "ஆஸ்டர் மொபிலிட்டி தொழிற்சாலை அருகே வசிக்கும் மக்கள் நீர் பயன்பாடு குறித்து விளக்கம் கேட்டுள்ளனர். நிறுவனம் அடுத்த மாதம் நீர் பயன்பாட்டு அறிக்கையை வெளியிடுவதாக தெரிவித்துள்ளது. விதிமீறல் நடந்ததாக இந்த செய்தி உறுதி செய்யவில்லை.", translation: "Residents near Aster Mobility's factory seek clarity on water use", day: 5, source: "Chennai Local (demo)", region: "Tamil Nadu", event: "Community & environment", tone: "mixed", impact: [{ stakeholder: "Local community", direction: "unclear", explanation: "Residents want more information. The report does not establish environmental harm or a violation." }], uncertainty: "A request for disclosure, not a finding of wrongdoing. Water-use measurements are not available in the source." },
+  { title: "Aster Mobility reports revenue growth alongside higher costs", text: "Aster Mobility reported an 18 percent increase in quarterly revenue. Operating costs rose 22 percent in the same period. The company attributed the cost increase to its research programme and new service locations. The release did not disclose profitability for individual products.", day: 4, source: "Business Dispatch (demo)", region: "India", event: "Financial results", tone: "mixed", impact: [{ stakeholder: "Business", direction: "mixed", explanation: "Sales growth suggests demand, while faster cost growth could place pressure on margins. The excerpt is insufficient to quantify that pressure." }], uncertainty: "Company-reported figures. The percentage changes alone do not establish the level of profitability." },
+  { title: "Aster Mobility recalls one charger batch for inspection", text: "Aster Mobility issued a voluntary recall of 800 chargers after identifying a connector fault in one production batch. The company said affected customers would receive replacements at no cost. No injuries were reported in the announcement.", day: 3, source: "Consumer Ledger (demo)", region: "India", event: "Product safety", tone: "negative", impact: [{ stakeholder: "Customers", direction: "negative", explanation: "Affected customers face disruption while replacing chargers; the announced remedy could reduce the longer-term impact." }, { stakeholder: "Business", direction: "unclear", explanation: "Replacement costs are plausible, but the source provides no financial estimate." }], uncertainty: "The announcement covers a single batch. It does not establish a problem with all products." },
+  { title: "European distributor signs pilot agreement with Aster Mobility", text: "Aster Mobility signed a six-month pilot agreement with a European distributor. The pilot will test service logistics in two cities before either party decides on a wider rollout. No binding volume commitment was disclosed.", day: 3, source: "Global Industry Review (demo)", region: "Global", event: "Partnership", tone: "positive", impact: [{ stakeholder: "Business", direction: "positive", explanation: "The pilot could provide evidence for future expansion; it is not a confirmed large-scale market entry." }], uncertainty: "Pilot agreement only. Future sales and rollout remain uncertain." },
+  { title: "Local suppliers join Aster Mobility skills programme", text: "Aster Mobility and a local training institute announced a supplier skills programme in Tamil Nadu. The first cohort will cover quality checks and maintenance. The announcement did not specify the number of suppliers who had enrolled.", day: 2, source: "Chennai Local (demo)", region: "Tamil Nadu", event: "Workforce", tone: "positive", impact: [{ stakeholder: "Suppliers", direction: "positive", explanation: "Training may strengthen supplier capability if firms enrol and complete the programme." }], uncertainty: "Programme announced; participation and outcomes have not been measured." },
+  { title: "Aster Mobility appoints a new head of service operations", text: "Aster Mobility appointed a new head of service operations. The company said the role would coordinate service capacity across its existing locations. The announcement did not include new performance targets.", day: 1, source: "Market Brief (demo)", region: "India", event: "Leadership", tone: "unclear", impact: [], uncertainty: "A leadership appointment alone does not establish improved service performance." },
+];
+export const demoArticles: Article[] = stories.map((s, i) => {
+  const id = `demo-story-${i + 1}`;
+  return { id, companyId: demoCompany.id, sourceId: `demo-${s.source}`, sourceName: s.source, title: s.title,
+    url: `https://example.com/company-lens/${id}`, text: s.text, publishedAt: `2026-09-${String(s.day).padStart(2, "0")}T08:30:00.000Z`, fetchedAt: createdAt,
+    language: s.translation ? "ta" : "en", region: s.region, contentHash: id, clusterId: s.cluster ?? id,
+    contentScope: "demo", demo: true, embedding: null, embeddingModel: null,
+    analysis: { eventType: s.event, sentiment: s.tone, summary: s.translation || s.text.split(". ")[0] + ".",
+      facts: [{ claim: "Illustrative source passage", quote: s.text.split(". ")[0] + (s.text.includes(". ") ? "." : "") }],
+      impacts: s.impact, uncertainty: s.uncertainty, mode: "demo", model: null,
+      translatedTitle: s.translation ?? null,
+      translatedText: s.translation ? "Residents near Aster Mobility's factory have asked for information about water use. The company said it would publish a water-use report next month. This report does not establish that a violation occurred." : null },
+  };
+});

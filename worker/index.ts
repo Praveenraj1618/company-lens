@@ -1,10 +1,13 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { handleApi, authenticated } from "../lib/api";
+import { scheduledTick } from "../lib/pipeline";
+import { Repository } from "../db";
+import type { RuntimeEnv } from "../lib/runtime";
 
-interface Env {
-  ASSETS: Fetcher;
-  DB: D1Database;
+interface Env extends RuntimeEnv {
+  ASSETS: { fetch(request: Request): Promise<Response> };
   IMAGES: {
     input(stream: ReadableStream): {
       transform(options: Record<string, unknown>): {
@@ -26,8 +29,17 @@ interface ExecutionContext {
 // const imageConfig: ImageConfig = { dangerouslyAllowSVG: true };
 
 const worker = {
+  async scheduled(_event: unknown, env: Env, ctx: ExecutionContext) {
+    ctx.waitUntil(scheduledTick(new Repository(env.DB), env));
+  },
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname.startsWith("/api/")) return handleApi(request, env);
+
+    if (env.DASHBOARD_PASSWORD && !await authenticated(request, env)) {
+      return new Response("Sign in to Company Lens.", { status: 401, headers: { "www-authenticate": 'Basic realm="Company Lens", charset="UTF-8"' } });
+    }
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];

@@ -1,0 +1,13 @@
+import type { ModelConfig } from "./provider.ts";
+export interface Statement {
+  bind(...values: unknown[]): Statement;
+  all<T = Record<string, unknown>>(): Promise<{ results: T[] }>;
+  first<T = Record<string, unknown>>(): Promise<T | null>;
+  run(): Promise<{ meta: { changes: number } }>;
+}
+export interface Database { prepare(sql: string): Statement; batch(statements: Statement[]): Promise<{ meta: { changes: number } }[]> }
+export interface RuntimeEnv extends ModelConfig {
+  DB: Database; ASSETS?: { fetch(request: Request): Promise<Response> };
+  ALLOW_LOCAL_DEV?: string; CRON_SECRET?: string;
+  TRUST_SITES_AUTH?: string; DASHBOARD_PASSWORD?: string;
+}
