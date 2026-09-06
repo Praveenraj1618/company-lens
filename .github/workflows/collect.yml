@@ -1,0 +1,27 @@
+name: Scheduled company coverage
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: company-lens-collector
+  cancel-in-progress: false
+jobs:
+  collect:
+    # Opt-in: configure a publicly reachable self-hosted endpoint and CRON_SECRET.
+    # Private Sites URLs require browser sign-in and cannot use this workflow.
+    if: vars.COMPANY_LENS_URL != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Collect one due source
+        env:
+          COMPANY_LENS_URL: ${{ vars.COMPANY_LENS_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: node scripts/trigger-collection.mjs

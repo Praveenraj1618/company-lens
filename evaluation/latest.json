@@ -1,0 +1,457 @@
+{
+  "dataset": "Fictional Aster Mobility demonstration",
+  "documents": 8,
+  "distinctStories": 7,
+  "questions": 18,
+  "limitations": "Small hand-authored smoke fixture, not an independent or real-world benchmark. Demo translations are prewritten; live translation/embedding/LLM quality is not measured. Latency is local retrieval only.",
+  "results": [
+    {
+      "mode": "original_text",
+      "recallAt5": 0.9333333333333333,
+      "mrr": 0.9333333333333333,
+      "unanswerableAbstention": 1,
+      "queries": [
+        {
+          "id": "q01",
+          "language": "en",
+          "latencyMs": 3.240468000000021,
+          "ranking": [
+            "demo-research",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q02",
+          "language": "en",
+          "latencyMs": 0.5645020000000045,
+          "ranking": [
+            "demo-research"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q03",
+          "language": "en",
+          "latencyMs": 0.35077900000001705,
+          "ranking": [],
+          "answerable": true,
+          "recallAt5": 0,
+          "reciprocalRank": 0,
+          "abstained": true
+        },
+        {
+          "id": "q04",
+          "language": "ta",
+          "latencyMs": 0.20709200000001715,
+          "ranking": [
+            "demo-story-3"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q05",
+          "language": "en",
+          "latencyMs": 0.20713200000000143,
+          "ranking": [
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q06",
+          "language": "en",
+          "latencyMs": 0.17836900000000355,
+          "ranking": [
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q07",
+          "language": "en",
+          "latencyMs": 0.11552399999999352,
+          "ranking": [
+            "demo-story-5"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q08",
+          "language": "en",
+          "latencyMs": 1.0413309999999854,
+          "ranking": [
+            "demo-story-5"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q09",
+          "language": "en",
+          "latencyMs": 0.103225000000009,
+          "ranking": [
+            "demo-story-6"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q10",
+          "language": "en",
+          "latencyMs": 0.09288999999998282,
+          "ranking": [
+            "demo-story-6"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q11",
+          "language": "en",
+          "latencyMs": 0.07743700000000331,
+          "ranking": [
+            "demo-story-7"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q12",
+          "language": "en",
+          "latencyMs": 0.09960999999998421,
+          "ranking": [
+            "demo-story-7"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q13",
+          "language": "en",
+          "latencyMs": 0.14101299999998673,
+          "ranking": [
+            "demo-story-8",
+            "demo-story-6",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q14",
+          "language": "en",
+          "latencyMs": 0.18587099999999168,
+          "ranking": [
+            "demo-story-8",
+            "demo-story-6",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q15",
+          "language": "en",
+          "latencyMs": 0.12044199999999705,
+          "ranking": [
+            "demo-story-7",
+            "demo-research",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q16",
+          "language": "en",
+          "latencyMs": 0.08660000000000423,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        },
+        {
+          "id": "q17",
+          "language": "en",
+          "latencyMs": 0.08692099999998959,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        },
+        {
+          "id": "q18",
+          "language": "ta",
+          "latencyMs": 0.11517399999999611,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        }
+      ]
+    },
+    {
+      "mode": "with_demo_translation",
+      "recallAt5": 1,
+      "mrr": 1,
+      "unanswerableAbstention": 1,
+      "queries": [
+        {
+          "id": "q01",
+          "language": "en",
+          "latencyMs": 0.22425800000002027,
+          "ranking": [
+            "demo-research",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q02",
+          "language": "en",
+          "latencyMs": 0.11571399999999699,
+          "ranking": [
+            "demo-research"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q03",
+          "language": "en",
+          "latencyMs": 0.11294999999998367,
+          "ranking": [
+            "demo-story-3"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q04",
+          "language": "ta",
+          "latencyMs": 0.1229449999999872,
+          "ranking": [
+            "demo-story-3"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q05",
+          "language": "en",
+          "latencyMs": 0.10797300000001542,
+          "ranking": [
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q06",
+          "language": "en",
+          "latencyMs": 0.9805389999999932,
+          "ranking": [
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q07",
+          "language": "en",
+          "latencyMs": 0.12064200000000369,
+          "ranking": [
+            "demo-story-5"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q08",
+          "language": "en",
+          "latencyMs": 0.08587900000000559,
+          "ranking": [
+            "demo-story-5"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q09",
+          "language": "en",
+          "latencyMs": 0.08864400000001638,
+          "ranking": [
+            "demo-story-6"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q10",
+          "language": "en",
+          "latencyMs": 0.10075199999999995,
+          "ranking": [
+            "demo-story-6"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q11",
+          "language": "en",
+          "latencyMs": 0.08328599999998687,
+          "ranking": [
+            "demo-story-7"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q12",
+          "language": "en",
+          "latencyMs": 0.0941219999999987,
+          "ranking": [
+            "demo-story-7"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q13",
+          "language": "en",
+          "latencyMs": 3.08223000000001,
+          "ranking": [
+            "demo-story-8",
+            "demo-story-6",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q14",
+          "language": "en",
+          "latencyMs": 0.1646780000000092,
+          "ranking": [
+            "demo-story-8",
+            "demo-story-6",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q15",
+          "language": "en",
+          "latencyMs": 0.11092700000000377,
+          "ranking": [
+            "demo-story-7",
+            "demo-research",
+            "demo-story-4"
+          ],
+          "answerable": true,
+          "recallAt5": 1,
+          "reciprocalRank": 1,
+          "abstained": false
+        },
+        {
+          "id": "q16",
+          "language": "en",
+          "latencyMs": 0.08541800000000421,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        },
+        {
+          "id": "q17",
+          "language": "en",
+          "latencyMs": 0.09382099999999127,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        },
+        {
+          "id": "q18",
+          "language": "ta",
+          "latencyMs": 0.0897860000000037,
+          "ranking": [],
+          "answerable": false,
+          "recallAt5": null,
+          "reciprocalRank": null,
+          "abstained": true
+        }
+      ]
+    }
+  ]
+}

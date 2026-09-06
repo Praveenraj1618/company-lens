@@ -1,0 +1,19 @@
+services:
+  company-lens:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - .dev.vars
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_PATH: /data/company-lens.sqlite
+      ALLOW_LOCAL_DEV: "false"
+      TRUST_SITES_AUTH: "false"
+      SCHEDULE_ENABLED: "true"
+    volumes:
+      - company-lens-data:/data
+    restart: unless-stopped
+volumes:
+  company-lens-data:
