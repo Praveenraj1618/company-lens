@@ -1,0 +1,1037 @@
+[
+  {
+    "id": "et-cfo",
+    "name": "ET CFO",
+    "url": "https://cfo.economictimes.indiatimes.com/rss/topstories",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET CFO",
+    "reference": "https://cfo.economictimes.indiatimes.com/rss"
+  },
+  {
+    "id": "et-tech",
+    "name": "ET Government · Technology",
+    "url": "https://government.economictimes.indiatimes.com/rss/technology",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET Government",
+    "reference": "https://government.economictimes.indiatimes.com/rss"
+  },
+  {
+    "id": "indian-express",
+    "name": "The Indian Express · Business",
+    "url": "https://indianexpress.com/section/business/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "oneindia-ta",
+    "name": "Oneindia Tamil",
+    "url": "https://tamil.oneindia.com/rss/feeds/oneindia-tamil-fb.xml",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Oneindia",
+    "reference": "https://tamil.oneindia.com/rss/"
+  },
+  {
+    "id": "oneindia-tech",
+    "name": "Oneindia Tamil · Technology",
+    "url": "https://tamil.oneindia.com/rss/feeds/tamil-technology-fb.xml",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Oneindia",
+    "reference": "https://tamil.oneindia.com/rss/"
+  },
+  {
+    "id": "goodreturns-ta",
+    "name": "Goodreturns Tamil · Business",
+    "url": "https://tamil.goodreturns.in/rss/feeds/tamil-money-news-fb.xml",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Goodreturns",
+    "reference": "https://tamil.goodreturns.in/rss/"
+  },
+  {
+    "id": "toi-business",
+    "name": "Times of India · Business",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/1898055.cms",
+    "region": "India",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-mumbai",
+    "name": "Times of India · Mumbai",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128838597.cms",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-delhi",
+    "name": "Times of India · Delhi",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128839596.cms",
+    "region": "Delhi",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-bengaluru",
+    "name": "Times of India · Bengaluru",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128833038.cms",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-hyderabad",
+    "name": "Times of India · Hyderabad",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128816011.cms",
+    "region": "Telangana",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-chennai",
+    "name": "Times of India · Chennai",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/2950623.cms",
+    "region": "Tamil Nadu",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-ahmedabad",
+    "name": "Times of India · Ahmedabad",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821153.cms",
+    "region": "Gujarat",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-bhubaneswar",
+    "name": "Times of India · Bhubaneswar",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/4118235.cms",
+    "region": "Odisha",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-coimbatore",
+    "name": "Times of India · Coimbatore",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/7503091.cms",
+    "region": "Tamil Nadu",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-gurugram",
+    "name": "Times of India · Gurugram",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/6547154.cms",
+    "region": "Haryana",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-guwahati",
+    "name": "Times of India · Guwahati",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/4118215.cms",
+    "region": "Assam",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-kolkata",
+    "name": "Times of India · Kolkata",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128830821.cms",
+    "region": "West Bengal",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-ludhiana",
+    "name": "Times of India · Ludhiana",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/3947051.cms",
+    "region": "Punjab",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-mangaluru",
+    "name": "Times of India · Mangaluru",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/3942690.cms",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-pune",
+    "name": "Times of India · Pune",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128821991.cms",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-goa",
+    "name": "Times of India · Goa",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/3012535.cms",
+    "region": "Goa",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-chandigarh",
+    "name": "Times of India · Chandigarh",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128816762.cms",
+    "region": "Chandigarh",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-lucknow",
+    "name": "Times of India · Lucknow",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128819658.cms",
+    "region": "Uttar Pradesh",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-patna",
+    "name": "Times of India · Patna",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/-2128817995.cms",
+    "region": "Bihar",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-jaipur",
+    "name": "Times of India · Jaipur",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/3012544.cms",
+    "region": "Rajasthan",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-ranchi",
+    "name": "Times of India · Ranchi",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/4118245.cms",
+    "region": "Jharkhand",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "toi-thiruvananthapuram",
+    "name": "Times of India · Thiruvananthapuram",
+    "url": "https://timesofindia.indiatimes.com/rssfeeds/878156304.cms",
+    "region": "Kerala",
+    "language": "en",
+    "publisher": "Times of India",
+    "reference": "https://timesofindia.indiatimes.com/rss.cms"
+  },
+  {
+    "id": "ht-chandigarh",
+    "name": "Hindustan Times · Chandigarh",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/chandigarh-news/rssfeed.xml",
+    "region": "Chandigarh",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-lucknow",
+    "name": "Hindustan Times · Lucknow",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/lucknow-news/rssfeed.xml",
+    "region": "Uttar Pradesh",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-kolkata",
+    "name": "Hindustan Times · Kolkata",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/kolkata-news/rssfeed.xml",
+    "region": "West Bengal",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-bengaluru",
+    "name": "Hindustan Times · Bengaluru",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/bengaluru-news/rssfeed.xml",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-mumbai",
+    "name": "Hindustan Times · Mumbai",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/mumbai-news/rssfeed.xml",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-pune",
+    "name": "Hindustan Times · Pune",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/pune-news/rssfeed.xml",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-delhi",
+    "name": "Hindustan Times · Delhi",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/delhi-news/rssfeed.xml",
+    "region": "Delhi",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-bhopal",
+    "name": "Hindustan Times · Bhopal",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/bhopal-news/rssfeed.xml",
+    "region": "Madhya Pradesh",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-indore",
+    "name": "Hindustan Times · Indore",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/indore-news/rssfeed.xml",
+    "region": "Madhya Pradesh",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-jaipur",
+    "name": "Hindustan Times · Jaipur",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/jaipur-news/rssfeed.xml",
+    "region": "Rajasthan",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-patna",
+    "name": "Hindustan Times · Patna",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/patna-news/rssfeed.xml",
+    "region": "Bihar",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-ranchi",
+    "name": "Hindustan Times · Ranchi",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/ranchi-news/rssfeed.xml",
+    "region": "Jharkhand",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-gurugram",
+    "name": "Hindustan Times · Gurugram",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/gurugram-news/rssfeed.xml",
+    "region": "Haryana",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-dehradun",
+    "name": "Hindustan Times · Dehradun",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/dehradun-news/rssfeed.xml",
+    "region": "Uttarakhand",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ht-noida",
+    "name": "Hindustan Times · Noida",
+    "url": "https://www.hindustantimes.com/feeds/rss/cities/noida-news/rssfeed.xml",
+    "region": "Uttar Pradesh",
+    "language": "en",
+    "publisher": "Hindustan Times",
+    "reference": "https://www.hindustantimes.com/rss"
+  },
+  {
+    "id": "ie-shimla",
+    "name": "The Indian Express · Shimla",
+    "url": "https://indianexpress.com/section/cities/shimla/feed/",
+    "region": "Himachal Pradesh",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-srinagar",
+    "name": "The Indian Express · Srinagar",
+    "url": "https://indianexpress.com/section/cities/srinagar/feed/",
+    "region": "Jammu and Kashmir",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-jammu",
+    "name": "The Indian Express · Jammu",
+    "url": "https://indianexpress.com/section/cities/jammu/feed/",
+    "region": "Jammu and Kashmir",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-jalandhar",
+    "name": "The Indian Express · Jalandhar",
+    "url": "https://indianexpress.com/section/cities/jalandhar/feed/",
+    "region": "Punjab",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-patiala",
+    "name": "The Indian Express · Patiala",
+    "url": "https://indianexpress.com/section/cities/patiala/feed/",
+    "region": "Punjab",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-panchkula",
+    "name": "The Indian Express · Panchkula",
+    "url": "https://indianexpress.com/section/cities/panchkula/feed/",
+    "region": "Haryana",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-gandhinagar",
+    "name": "The Indian Express · Gandhinagar",
+    "url": "https://indianexpress.com/section/cities/gandhinagar/feed/",
+    "region": "Gujarat",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-surat",
+    "name": "The Indian Express · Surat",
+    "url": "https://indianexpress.com/section/cities/surat/feed/",
+    "region": "Gujarat",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-rajkot",
+    "name": "The Indian Express · Rajkot",
+    "url": "https://indianexpress.com/section/cities/rajkot/feed/",
+    "region": "Gujarat",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-nagpur",
+    "name": "The Indian Express · Nagpur",
+    "url": "https://indianexpress.com/section/cities/nagpur/feed/",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-nashik",
+    "name": "The Indian Express · Nashik",
+    "url": "https://indianexpress.com/section/cities/nashik/feed/",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-mangaluru",
+    "name": "The Indian Express · Mangaluru",
+    "url": "https://indianexpress.com/section/cities/mangaluru/feed/",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-mysuru",
+    "name": "The Indian Express · Mysuru",
+    "url": "https://indianexpress.com/section/cities/mysuru/feed/",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-hyderabad",
+    "name": "The Indian Express · Hyderabad",
+    "url": "https://indianexpress.com/section/cities/hyderabad/feed/",
+    "region": "Telangana",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-manipur",
+    "name": "The Indian Express · Manipur",
+    "url": "https://indianexpress.com/section/north-east-india/manipur/feed/",
+    "region": "Manipur",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-meghalaya",
+    "name": "The Indian Express · Meghalaya",
+    "url": "https://indianexpress.com/section/north-east-india/meghalaya/feed/",
+    "region": "Meghalaya",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-mizoram",
+    "name": "The Indian Express · Mizoram",
+    "url": "https://indianexpress.com/section/north-east-india/mizoram/feed/",
+    "region": "Mizoram",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-nagaland",
+    "name": "The Indian Express · Nagaland",
+    "url": "https://indianexpress.com/section/north-east-india/nagaland/feed/",
+    "region": "Nagaland",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "ie-tripura",
+    "name": "The Indian Express · Tripura",
+    "url": "https://indianexpress.com/section/north-east-india/tripura/feed/",
+    "region": "Tripura",
+    "language": "en",
+    "publisher": "The Indian Express",
+    "reference": "https://indianexpress.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-hindi",
+    "name": "Oneindia Hindi",
+    "url": "https://hindi.oneindia.com/rss/feeds/oneindia-hindi-fb.xml",
+    "region": "India",
+    "language": "hi",
+    "publisher": "Oneindia",
+    "reference": "https://hindi.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-hindi-business",
+    "name": "Oneindia Hindi · Business",
+    "url": "https://hindi.oneindia.com/rss/feeds/hindi-business-fb.xml",
+    "region": "India",
+    "language": "hi",
+    "publisher": "Oneindia",
+    "reference": "https://hindi.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-kannada",
+    "name": "Oneindia Kannada",
+    "url": "https://kannada.oneindia.com/rss/feeds/oneindia-kannada-fb.xml",
+    "region": "Karnataka",
+    "language": "kn",
+    "publisher": "Oneindia",
+    "reference": "https://kannada.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-kannada-bengaluru",
+    "name": "Oneindia Kannada · Bengaluru",
+    "url": "https://kannada.oneindia.com/rss/feeds/kannada-bengaluru-fb.xml",
+    "region": "Karnataka",
+    "language": "kn",
+    "publisher": "Oneindia",
+    "reference": "https://kannada.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-telugu",
+    "name": "Oneindia Telugu",
+    "url": "https://telugu.oneindia.com/rss/feeds/oneindia-telugu-fb.xml",
+    "region": "Andhra Pradesh",
+    "language": "te",
+    "publisher": "Oneindia",
+    "reference": "https://telugu.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-telugu-science-technology",
+    "name": "Oneindia Telugu · Science Technology",
+    "url": "https://telugu.oneindia.com/rss/feeds/telugu-science-technology-fb.xml",
+    "region": "Andhra Pradesh",
+    "language": "te",
+    "publisher": "Oneindia",
+    "reference": "https://telugu.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-malayalam",
+    "name": "Oneindia Malayalam",
+    "url": "https://malayalam.oneindia.com/rss/feeds/oneindia-malayalam-fb.xml",
+    "region": "Kerala",
+    "language": "ml",
+    "publisher": "Oneindia",
+    "reference": "https://malayalam.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-bengali",
+    "name": "Oneindia Bengali",
+    "url": "https://bengali.oneindia.com/rss/feeds/oneindia-bengali-fb.xml",
+    "region": "West Bengal",
+    "language": "bn",
+    "publisher": "Oneindia",
+    "reference": "https://bengali.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-oneindia-gujarati",
+    "name": "Oneindia Gujarati",
+    "url": "https://gujarati.oneindia.com/rss/feeds/oneindia-gujarati-fb.xml",
+    "region": "Gujarat",
+    "language": "gu",
+    "publisher": "Oneindia",
+    "reference": "https://gujarati.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-hindi-bihar",
+    "name": "Oneindia Hindi · Bihar",
+    "url": "https://hindi.oneindia.com/rss/feeds/hindi-bihar-fb.xml",
+    "region": "Bihar",
+    "language": "hi",
+    "publisher": "Oneindia",
+    "reference": "https://hindi.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-hindi-himachal-pradesh",
+    "name": "Oneindia Hindi · Himachal Pradesh",
+    "url": "https://hindi.oneindia.com/rss/feeds/hindi-himachal-pradesh-fb.xml",
+    "region": "Himachal Pradesh",
+    "language": "hi",
+    "publisher": "Oneindia",
+    "reference": "https://hindi.oneindia.com/rss/"
+  },
+  {
+    "id": "oi-hindi-jharkhand",
+    "name": "Oneindia Hindi · Jharkhand",
+    "url": "https://hindi.oneindia.com/rss/feeds/hindi-jharkhand-fb.xml",
+    "region": "Jharkhand",
+    "language": "hi",
+    "publisher": "Oneindia",
+    "reference": "https://hindi.oneindia.com/rss/"
+  },
+  {
+    "id": "bs-top-stories",
+    "name": "Business Standard · Top Stories",
+    "url": "https://www.business-standard.com/rss/home_page_top_stories.rss",
+    "region": "India",
+    "language": "en",
+    "publisher": "Business Standard",
+    "reference": "https://www.business-standard.com/rss-feeds/listing"
+  },
+  {
+    "id": "bs-industry",
+    "name": "Business Standard · Industry",
+    "url": "https://www.business-standard.com/rss/industry-217.rss",
+    "region": "India",
+    "language": "en",
+    "publisher": "Business Standard",
+    "reference": "https://www.business-standard.com/rss-feeds/listing"
+  },
+  {
+    "id": "bs-sme",
+    "name": "Business Standard · SME",
+    "url": "https://www.business-standard.com/rss/industry/sme-21702.rss",
+    "region": "India",
+    "language": "en",
+    "publisher": "Business Standard",
+    "reference": "https://www.business-standard.com/rss-feeds/listing"
+  },
+  {
+    "id": "bs-banking",
+    "name": "Business Standard · Banking",
+    "url": "https://www.business-standard.com/rss/industry/banking-21703.rss",
+    "region": "India",
+    "language": "en",
+    "publisher": "Business Standard",
+    "reference": "https://www.business-standard.com/rss-feeds/listing"
+  },
+  {
+    "id": "bs-auto",
+    "name": "Business Standard · Auto",
+    "url": "https://www.business-standard.com/rss/industry/auto-21701.rss",
+    "region": "India",
+    "language": "en",
+    "publisher": "Business Standard",
+    "reference": "https://www.business-standard.com/rss-feeds/listing"
+  },
+  {
+    "id": "eastmojo",
+    "name": "EastMojo",
+    "url": "https://eastmojo.com/feed/",
+    "region": "North East",
+    "language": "en",
+    "publisher": "EastMojo",
+    "reference": "https://eastmojo.com/feed/"
+  },
+  {
+    "id": "nenow",
+    "name": "Northeast Now",
+    "url": "https://nenow.in/feed",
+    "region": "Assam",
+    "language": "en",
+    "publisher": "Northeast Now",
+    "reference": "https://nenow.in/feed"
+  },
+  {
+    "id": "shillong-times",
+    "name": "The Shillong Times",
+    "url": "https://theshillongtimes.com/feed/",
+    "region": "Meghalaya",
+    "language": "en",
+    "publisher": "The Shillong Times",
+    "reference": "https://theshillongtimes.com/feed/"
+  },
+  {
+    "id": "pragativadi",
+    "name": "Pragativadi",
+    "url": "https://pragativadi.com/feed/",
+    "region": "Odisha",
+    "language": "en",
+    "publisher": "Pragativadi",
+    "reference": "https://pragativadi.com/feed/"
+  },
+  {
+    "id": "orissa-post",
+    "name": "Orissa POST",
+    "url": "https://www.orissapost.com/feed/",
+    "region": "Odisha",
+    "language": "en",
+    "publisher": "Orissa POST",
+    "reference": "https://www.orissapost.com/feed/"
+  },
+  {
+    "id": "ommcom",
+    "name": "Ommcom News",
+    "url": "https://ommcomnews.com/feed/",
+    "region": "Odisha",
+    "language": "en",
+    "publisher": "Ommcom News",
+    "reference": "https://ommcomnews.com/feed/"
+  },
+  {
+    "id": "odisha-bytes",
+    "name": "Odisha Bytes",
+    "url": "https://odishabytes.com/feed/",
+    "region": "Odisha",
+    "language": "en",
+    "publisher": "Odisha Bytes",
+    "reference": "https://odishabytes.com/feed/"
+  },
+  {
+    "id": "greater-kashmir",
+    "name": "Greater Kashmir",
+    "url": "https://www.greaterkashmir.com/feed/",
+    "region": "Jammu and Kashmir",
+    "language": "en",
+    "publisher": "Greater Kashmir",
+    "reference": "https://www.greaterkashmir.com/feed/"
+  },
+  {
+    "id": "daily-excelsior",
+    "name": "Daily Excelsior",
+    "url": "https://www.dailyexcelsior.com/feed/",
+    "region": "Jammu and Kashmir",
+    "language": "en",
+    "publisher": "Daily Excelsior",
+    "reference": "https://www.dailyexcelsior.com/feed/"
+  },
+  {
+    "id": "kashmir-life",
+    "name": "Kashmir Life",
+    "url": "https://kashmirlife.net/feed/",
+    "region": "Jammu and Kashmir",
+    "language": "en",
+    "publisher": "Kashmir Life",
+    "reference": "https://kashmirlife.net/feed/"
+  },
+  {
+    "id": "statesman",
+    "name": "The Statesman",
+    "url": "https://www.thestatesman.com/feed",
+    "region": "West Bengal",
+    "language": "en",
+    "publisher": "The Statesman",
+    "reference": "https://www.thestatesman.com/feed"
+  },
+  {
+    "id": "telangana-today",
+    "name": "Telangana Today",
+    "url": "https://telanganatoday.com/feed",
+    "region": "Telangana",
+    "language": "en",
+    "publisher": "Telangana Today",
+    "reference": "https://telanganatoday.com/feed"
+  },
+  {
+    "id": "siasat",
+    "name": "The Siasat Daily",
+    "url": "https://www.siasat.com/feed/",
+    "region": "Telangana",
+    "language": "en",
+    "publisher": "The Siasat Daily",
+    "reference": "https://www.siasat.com/feed/"
+  },
+  {
+    "id": "entrackr",
+    "name": "Entrackr",
+    "url": "https://entrackr.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Entrackr",
+    "reference": "https://entrackr.com/feed/"
+  },
+  {
+    "id": "inc42",
+    "name": "Inc42",
+    "url": "https://inc42.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Inc42",
+    "reference": "https://inc42.com/feed/"
+  },
+  {
+    "id": "medianama",
+    "name": "MediaNama",
+    "url": "https://www.medianama.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "MediaNama",
+    "reference": "https://www.medianama.com/feed/"
+  },
+  {
+    "id": "aim",
+    "name": "Analytics India Magazine",
+    "url": "https://analyticsindiamag.com/feed/",
+    "region": "Karnataka",
+    "language": "en",
+    "publisher": "Analytics India Magazine",
+    "reference": "https://analyticsindiamag.com/feed/"
+  },
+  {
+    "id": "punekar",
+    "name": "Punekar News",
+    "url": "https://www.punekarnews.in/feed/",
+    "region": "Maharashtra",
+    "language": "en",
+    "publisher": "Punekar News",
+    "reference": "https://www.punekarnews.in/feed/"
+  },
+  {
+    "id": "et-auto",
+    "name": "ET Auto",
+    "url": "https://auto.economictimes.indiatimes.com/rss/topstories",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET Auto",
+    "reference": "https://auto.economictimes.indiatimes.com/rss"
+  },
+  {
+    "id": "et-health",
+    "name": "ET Healthworld",
+    "url": "https://health.economictimes.indiatimes.com/rss/topstories",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET Healthworld",
+    "reference": "https://health.economictimes.indiatimes.com/rss"
+  },
+  {
+    "id": "et-hr",
+    "name": "ETHRWorld",
+    "url": "https://hr.economictimes.indiatimes.com/rss/topstories",
+    "region": "India",
+    "language": "en",
+    "publisher": "ETHRWorld",
+    "reference": "https://hr.economictimes.indiatimes.com/rss"
+  },
+  {
+    "id": "bbc-business",
+    "name": "BBC · Business",
+    "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "BBC",
+    "reference": "https://feeds.bbci.co.uk/news/business/rss.xml"
+  },
+  {
+    "id": "bbc-tech",
+    "name": "BBC · Technology",
+    "url": "https://feeds.bbci.co.uk/news/technology/rss.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "BBC",
+    "reference": "https://feeds.bbci.co.uk/news/technology/rss.xml"
+  },
+  {
+    "id": "guardian-business",
+    "name": "The Guardian · Business",
+    "url": "https://www.theguardian.com/business/rss",
+    "region": "Global",
+    "language": "en",
+    "publisher": "The Guardian",
+    "reference": "https://www.theguardian.com/business/rss"
+  },
+  {
+    "id": "guardian-tech",
+    "name": "The Guardian · Technology",
+    "url": "https://www.theguardian.com/technology/rss",
+    "region": "Global",
+    "language": "en",
+    "publisher": "The Guardian",
+    "reference": "https://www.theguardian.com/technology/rss"
+  },
+  {
+    "id": "cnbc",
+    "name": "CNBC · Business",
+    "url": "https://www.cnbc.com/id/10001147/device/rss/rss.html",
+    "region": "Global",
+    "language": "en",
+    "publisher": "CNBC",
+    "reference": "https://www.cnbc.com/id/10001147/device/rss/rss.html"
+  },
+  {
+    "id": "ft-companies",
+    "name": "Financial Times · Companies",
+    "url": "https://www.ft.com/companies?format=rss",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Financial Times",
+    "reference": "https://www.ft.com/companies?format=rss"
+  },
+  {
+    "id": "aljazeera",
+    "name": "Al Jazeera",
+    "url": "https://www.aljazeera.com/xml/rss/all.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Al Jazeera",
+    "reference": "https://www.aljazeera.com/xml/rss/all.xml"
+  },
+  {
+    "id": "techcrunch",
+    "name": "TechCrunch",
+    "url": "https://techcrunch.com/feed/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "TechCrunch",
+    "reference": "https://techcrunch.com/feed/"
+  },
+  {
+    "id": "venturebeat",
+    "name": "VentureBeat",
+    "url": "https://venturebeat.com/feed/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "VentureBeat",
+    "reference": "https://venturebeat.com/feed/"
+  },
+  {
+    "id": "ars-technica",
+    "name": "Ars Technica",
+    "url": "https://feeds.arstechnica.com/arstechnica/index",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Ars Technica",
+    "reference": "https://feeds.arstechnica.com/arstechnica/index"
+  },
+  {
+    "id": "the-verge",
+    "name": "The Verge",
+    "url": "https://www.theverge.com/rss/index.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "The Verge",
+    "reference": "https://www.theverge.com/rss/index.xml"
+  },
+  {
+    "id": "dw-business",
+    "name": "DW · Business",
+    "url": "https://rss.dw.com/rdf/rss-en-bus",
+    "region": "Global",
+    "language": "en",
+    "publisher": "DW",
+    "reference": "https://rss.dw.com/rdf/rss-en-bus"
+  },
+  {
+    "id": "scmp-business",
+    "name": "South China Morning Post · Business",
+    "url": "https://www.scmp.com/rss/92/feed",
+    "region": "Global",
+    "language": "en",
+    "publisher": "South China Morning Post",
+    "reference": "https://www.scmp.com/rss/92/feed"
+  },
+  {
+    "id": "cna-business",
+    "name": "CNA · Business",
+    "url": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936",
+    "region": "Global",
+    "language": "en",
+    "publisher": "CNA",
+    "reference": "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=6936"
+  },
+  {
+    "id": "npr-business",
+    "name": "NPR · Business",
+    "url": "https://feeds.npr.org/1006/rss.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "NPR",
+    "reference": "https://feeds.npr.org/1006/rss.xml"
+  }
+]

@@ -82,3 +82,14 @@ test('model output with an invented supporting quote is rejected',async()=>{
  try { await assert.rejects(analyze({OPENAI_API_KEY:'test'},'Company update','The company opened a training centre.','Company'),/evidence validation/); }
  finally {globalThis.fetch=previous;}
 });
+
+test('regional catalog has 100 Indian and 15 global feeds with valid, unique identifiers and geography',async()=>{
+ const {initialSources,initialCompanies,REGIONS,sourceZone}=await import('../lib/catalog.ts');
+ const {detectLanguage}=await import('../lib/intelligence.ts');
+ assert.equal(initialSources.filter(s=>s.region!=='Global').length,100);assert.equal(initialSources.filter(s=>s.region==='Global').length,15);
+ assert.equal(new Set(initialSources.map(s=>s.url)).size,115);assert.equal(new Set(initialSources.map(s=>s.id)).size,115);
+ for(const s of initialSources){assert.ok(REGIONS.includes(s.region));assert.equal(new URL(s.url).protocol,'https:');assert.equal(s.status,'unfetched');}
+ for(const zone of ['North','South','East','West','Central','North East'])assert.ok(initialSources.some(s=>sourceZone(s.region)===zone));
+ const vee=initialCompanies.find(c=>c.id==='vee-technologies');assert.ok(matchesCompany('Vee Technologies Pvt Ltd opens a training centre',vee));assert.equal(matchesCompany('Vee speaks about technology at school',vee),false);
+ assert.equal(detectLanguage('ಕರ್ನಾಟಕದ ಕಂಪನಿಯ ಸುದ್ದಿ'),'kn');assert.equal(detectLanguage('కంపెనీ వార్తలు'),'te');assert.equal(detectLanguage('कंपनी','mr'),'mr');
+});

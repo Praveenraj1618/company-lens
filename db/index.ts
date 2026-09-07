@@ -1,6 +1,6 @@
 import type { Database } from "../lib/runtime.ts";
 import type { Article, Company, Run, Source } from "../lib/types.ts";
-import { initialCompanies, initialSources } from "../lib/demo.ts";
+import { CATALOG_VERSION, initialCompanies, initialSources } from "../lib/catalog.ts";
 
 type Row = Record<string, unknown>;
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
@@ -16,19 +16,21 @@ export class Repository {
   db: Database;
   constructor(db: Database) { if (!db) throw new Error("Database is unavailable."); this.db = db; }
   async initialize(): Promise<void> {
-    const ready = await this.getSetting("initialized");
-    if (ready) return;
+    const ready = await this.getSetting("catalogVersion");
+    if (ready === CATALOG_VERSION) return;
     const statements = initialCompanies.map(c => this.db.prepare("INSERT OR IGNORE INTO companies (id,name,domain,industry,aliases,description,demo,created_at) VALUES (?,?,?,?,?,?,0,?)").bind(c.id,c.name,c.domain,c.industry,JSON.stringify(c.aliases),c.description,c.createdAt));
     statements.push(...initialSources.map(s => this.db.prepare("INSERT OR IGNORE INTO sources (id,name,url,kind,region,language,enabled,status) VALUES (?,?,?,?,?,?,1,'unfetched')").bind(s.id,s.name,s.url,s.kind,s.region,s.language)));
     statements.push(this.db.prepare("INSERT OR IGNORE INTO settings (key,value) VALUES ('initialized','1')"));
-    await this.db.batch(statements);
+    // Keep batches small for D1; retries resume safely without changing user edits.
+    for (let i = 0; i < statements.length; i += 40) await this.db.batch(statements.slice(i, i + 40));
+    await this.setSetting("catalogVersion", CATALOG_VERSION);
   }
   async companies(): Promise<Company[]> { return (await this.db.prepare("SELECT * FROM companies ORDER BY created_at,name").all()).results.map(r => decode<Company>(r)); }
   async sources(): Promise<Source[]> { return (await this.db.prepare("SELECT * FROM sources ORDER BY name").all()).results.map(r => decode<Source>(r)); }
   async articles(companyId: string): Promise<Article[]> {
-    return (await this.db.prepare("SELECT * FROM articles WHERE company_id=? ORDER BY COALESCE(published_at,fetched_at) DESC LIMIT 300").bind(companyId).all()).results.map(r => decode<Article>(r));
+    return (await this.db.prepare("SELECT * FROM articles WHERE company_id=? ORDER BY COALESCE(published_at,fetched_at) DESC LIMIT 1500").bind(companyId).all()).results.map(r => decode<Article>(r));
   }
-  async runs(): Promise<Run[]> { return (await this.db.prepare("SELECT * FROM runs ORDER BY started_at DESC LIMIT 30").all()).results.map(r => decode<Run>(r)); }
+  async runs(): Promise<Run[]> { return (await this.db.prepare("SELECT * FROM runs ORDER BY started_at DESC LIMIT 150").all()).results.map(r => decode<Run>(r)); }
   async putCompany(c: Company): Promise<void> {
     await this.db.prepare("INSERT INTO companies (id,name,domain,industry,aliases,description,demo,created_at) VALUES (?,?,?,?,?,?,0,?) ON CONFLICT(id) DO UPDATE SET name=excluded.name,domain=excluded.domain,industry=excluded.industry,aliases=excluded.aliases,description=excluded.description").bind(c.id,c.name,c.domain,c.industry,JSON.stringify(c.aliases),c.description,c.createdAt).run();
   }

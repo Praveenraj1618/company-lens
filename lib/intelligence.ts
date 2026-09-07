@@ -8,8 +8,8 @@ export function tokens(text: string): string[] {
   return (normalize(text).match(/[\p{L}\p{M}\p{N}]+/gu) ?? []).filter(t => t.length > 1 && !STOP.has(t));
 }
 export function detectLanguage(text: string, fallback = "en"): string {
-  if (/[\u0B80-\u0BFF]/u.test(text)) return "ta";
-  if (/[\u0900-\u097F]/u.test(text)) return "hi";
+  const scripts: [RegExp, string][] = [[/[\u0B80-\u0BFF]/u, "ta"], [/[\u0C80-\u0CFF]/u, "kn"], [/[\u0C00-\u0C7F]/u, "te"], [/[\u0D00-\u0D7F]/u, "ml"], [/[\u0A80-\u0AFF]/u, "gu"], [/[\u0A00-\u0A7F]/u, "pa"], [/[\u0B00-\u0B7F]/u, "or"], [/[\u0980-\u09FF]/u, fallback === "as" ? "as" : "bn"], [/[\u0900-\u097F]/u, fallback === "mr" ? "mr" : "hi"]];
+  for (const [pattern, language] of scripts) if (pattern.test(text)) return language;
   return fallback;
 }
 export function matchesCompany(text: string, company: Pick<Company, "name" | "aliases">): boolean {

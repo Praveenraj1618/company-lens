@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { REGIONS, LANGUAGES } from "./catalog.ts";
 import { Repository } from "../db/index.ts";
 import { demoArticles, demoCompany } from "./demo.ts";
 import { canonicalUrl, detectLanguage, matchesCompany } from "./intelligence.ts";
@@ -10,7 +11,7 @@ import type { RuntimeEnv } from "./runtime.ts";
 import type { AppState, Article, Company, Source } from "./types.ts";
 
 const companyInput = z.object({ id: z.string().max(80).optional(), name: z.string().trim().min(2).max(100), domain: z.string().trim().min(3).max(250), industry: z.string().trim().max(100).default("Other"), aliases: z.array(z.string().trim().min(2).max(100)).max(20).default([]), description: z.string().trim().max(500).default("") });
-const sourceInput = z.object({ name: z.string().trim().min(2).max(100), url: z.string().url().max(2000), kind: z.enum(["rss", "web"]), region: z.enum(["India", "Tamil Nadu", "Global"]), language: z.enum(["en", "ta", "hi"]).default("en") });
+const sourceInput = z.object({ name: z.string().trim().min(2).max(100), url: z.string().url().max(2000), kind: z.enum(["rss", "web"]), region: z.enum(REGIONS), language: z.string().refine(v => Object.hasOwn(LANGUAGES, v), "Choose a supported language").default("en") });
 export async function secretEqual(a: string, b: string): Promise<boolean> {
   const [x, y] = await Promise.all([a, b].map(s => crypto.subtle.digest("SHA-256", new TextEncoder().encode(s))));
   let result = 0; const first = new Uint8Array(x), second = new Uint8Array(y);
@@ -69,14 +70,14 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
     if (path === "/api/companies" && request.method === "POST") {
       const data = companyInput.parse(await payload(request)), current = await repo.companies();
       if (data.id && !current.some(c => c.id === data.id)) throw new InputError("Company was not found.");
-      if (!data.id && current.length >= 25) throw new InputError("This workspace supports 25 companies.");
+      if (!data.id && current.length >= 75) throw new InputError("This workspace supports 75 companies.");
       const domain = publicUrl(data.domain.startsWith("https://") ? data.domain : `https://${data.domain}`).hostname;
       const company: Company = { ...data, id: data.id || crypto.randomUUID(), domain, createdAt: current.find(c => c.id === data.id)?.createdAt || new Date().toISOString(), demo: false };
       await repo.putCompany(company); return json({ company }, 201);
     }
     if (path === "/api/sources" && request.method === "POST") {
       const data = sourceInput.parse(await payload(request)); publicUrl(data.url);
-      if ((await repo.sources()).length >= 20) throw new InputError("This workspace supports 20 sources.");
+      if ((await repo.sources()).length >= 250) throw new InputError("This workspace supports 250 sources.");
       const source: Source = { ...data, url: canonicalUrl(data.url), id: crypto.randomUUID(), enabled: true, status: "unfetched", lastFetchedAt: null, error: null };
       await repo.putSource(source); return json({ source }, 201);
     }
@@ -91,7 +92,7 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
       const run = await ingestSource(repo, env, data.sourceId); return json({ run });
     }
     if (path === "/api/import" && request.method === "POST") {
-      const data = z.object({ companyId: z.string().max(80), url: z.string().url().max(2000), title: z.string().trim().max(500).optional(), text: z.string().trim().max(14000).optional(), publishedAt: z.string().max(50).optional(), region: z.enum(["India", "Tamil Nadu", "Global"]).default("India"), language: z.enum(["en", "ta", "hi"]).default("en") }).parse(await payload(request));
+      const data = z.object({ companyId: z.string().max(80), url: z.string().url().max(2000), title: z.string().trim().max(500).optional(), text: z.string().trim().max(14000).optional(), publishedAt: z.string().max(50).optional(), region: z.enum(REGIONS).default("India"), language: z.string().refine(v => Object.hasOwn(LANGUAGES, v), "Choose a supported language").default("en") }).parse(await payload(request));
       const website = publicUrl(data.url), company = (await repo.companies()).find(c => c.id === data.companyId);
       if (!company) throw new InputError("Select a real company from your watchlist.");
       if (await repo.exists(company.id, canonicalUrl(data.url))) return json({ error: "This article is already in the company timeline." }, 409);

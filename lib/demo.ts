@@ -2,25 +2,7 @@ import type { Analysis, Article, Company, Region, Sentiment, Source } from "./ty
 
 const createdAt = "2026-09-01T09:00:00.000Z";
 export const demoCompany: Company = { id: "demo-aster", name: "Aster Mobility", domain: "aster.example.com", industry: "Electric mobility", aliases: ["Aster Mobility", "ஆஸ்டர் மொபிலிட்டி"], description: "Fictional company used to demonstrate regional and global news intelligence.", demo: true, createdAt };
-export const initialCompanies: Company[] = [
-  { id: "infosys", name: "Infosys", domain: "infosys.com", aliases: ["Infosys Limited", "இன்ஃபோசிஸ்", "இன்போசிஸ்"], description: "Track coverage of Infosys across your selected sources." },
-  { id: "tcs", name: "Tata Consultancy Services", domain: "tcs.com", aliases: ["TCS", "டிசிஎஸ்", "டாடா கன்சல்டன்சி"], description: "Track coverage of Tata Consultancy Services." },
-  { id: "wipro", name: "Wipro", domain: "wipro.com", aliases: ["Wipro Limited", "விப்ரோ"], description: "Track coverage of Wipro." },
-  { id: "zoho", name: "Zoho", domain: "zoho.com", aliases: ["Zoho Corporation", "ஜோஹோ", "சோஹோ"], description: "Track coverage of Zoho." },
-  { id: "hcltech", name: "HCLTech", domain: "hcltech.com", aliases: ["HCL Technologies", "HCL Tech", "எச்சிஎல்"], description: "Track coverage of HCLTech." },
-].map(c => ({ ...c, industry: "Technology", demo: false, createdAt }));
-
-const seedSources: [string, string, string, Region, string][] = [
-  ["et-cfo", "ET CFO", "https://cfo.economictimes.indiatimes.com/rss/topstories", "India", "en"],
-  ["et-tech", "ET Government · Technology", "https://government.economictimes.indiatimes.com/rss/technology", "India", "en"],
-  ["indian-express", "The Indian Express · Business", "https://indianexpress.com/section/business/feed/", "India", "en"],
-  ["bbc-business", "BBC · Business", "https://feeds.bbci.co.uk/news/business/rss.xml", "Global", "en"],
-  ["bbc-tech", "BBC · Technology", "https://feeds.bbci.co.uk/news/technology/rss.xml", "Global", "en"],
-  ["oneindia-ta", "Oneindia Tamil", "https://tamil.oneindia.com/rss/feeds/oneindia-tamil-fb.xml", "Tamil Nadu", "ta"],
-  ["oneindia-tech", "Oneindia Tamil · Technology", "https://tamil.oneindia.com/rss/feeds/tamil-technology-fb.xml", "Tamil Nadu", "ta"],
-  ["goodreturns-ta", "Goodreturns Tamil · Business", "https://tamil.goodreturns.in/rss/feeds/tamil-money-news-fb.xml", "Tamil Nadu", "ta"],
-];
-export const initialSources: Source[] = seedSources.map(([id, name, url, region, language]) => ({ id, name, url, region, language, kind: "rss", enabled: true, status: "unfetched", lastFetchedAt: null, error: null }));
+export { initialCompanies, initialSources } from "./catalog.ts";
 
 type DemoStory = { title: string; text: string; day: number; source: string; region: Region; event: string; tone: Sentiment; impact: Analysis["impacts"]; uncertainty: string; cluster?: string; translation?: string };
 const stories: DemoStory[] = [

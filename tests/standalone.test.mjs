@@ -17,14 +17,14 @@ test('standalone HTTP serves the built app, assets, persisted API, and protected
     const page=await fetch(base);const html=await page.text();assert.equal(page.status,200);assert.match(html,/Intelligence overview/);
     const assets=[...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)].map(m=>m[1]).filter(p=>p.startsWith('/'));
     assert.ok(assets.length>0);for(const path of assets.slice(0,8)){const r=await fetch(base+path);assert.equal(r.status,200,path);assert.ok((await r.arrayBuffer()).byteLength>0);}
-    const state=await (await fetch(base+'/api/state?company=infosys')).json();assert.equal(state.companies.length,6);
+    const state=await (await fetch(base+'/api/state?company=infosys')).json();assert.equal(state.companies.length,21);
     const body={name:'Runtime Test Company',domain:'runtime-example.com',industry:'Testing',aliases:['Runtime Example']};
     const saved=await fetch(base+'/api/companies',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});assert.equal(saved.status,201);
-    const changed=await (await fetch(base+'/api/state?company=infosys')).json();assert.equal(changed.companies.length,7);
+    const changed=await (await fetch(base+'/api/state?company=infosys')).json();assert.equal(changed.companies.length,22);
     const csrf=await fetch(base+'/api/companies',{method:'POST',headers:{'content-type':'application/json',origin:'https://untrusted.example'},body:JSON.stringify(body)});assert.equal(csrf.status,400);
     const health=await fetch(base+'/api/health');assert.equal(health.status,200);
   }finally{await runtime.close();}
-  const db=openDatabase(join(directory,'data.sqlite'));assert.equal((await new Repository(db).companies()).length,6);db.close();rmSync(directory,{recursive:true,force:true});
+  const db=openDatabase(join(directory,'data.sqlite'));assert.equal((await new Repository(db).companies()).length,21);db.close();rmSync(directory,{recursive:true,force:true});
 });
 test('standalone password protection ignores spoofed Sites headers',async()=>{
   const runtime=await createRuntime({database:':memory:',env:{DASHBOARD_PASSWORD:'correct-test-password',TRUST_SITES_AUTH:'true'}});

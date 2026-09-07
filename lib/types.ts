@@ -1,5 +1,5 @@
 export type Sentiment = "positive" | "negative" | "mixed" | "unclear";
-export type Region = "India" | "Tamil Nadu" | "Global";
+export type Region = typeof import("./catalog.ts").REGIONS[number];
 export type AnalysisMode = "model" | "baseline" | "demo";
 export interface Company {
   id: string; name: string; domain: string; industry: string;
