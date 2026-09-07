@@ -38,7 +38,7 @@ test('scheduled sync is resumable, private, idempotent and respects source switc
  try{
   const snapshot=await collectCatalog(async()=>Array.from({length:45},(_,i)=>item(i)),[source]);const sealed=await sealSnapshot(snapshot,keys.public);
   const manifest={version:1,generatedAt:snapshot.finishedAt,intervalHours:3,snapshots:[{id:snapshot.id,finishedAt:snapshot.finishedAt,sha256:createHash('sha256').update(sealed).digest('hex')}]};
-  const fetcher=async url=>new Response(url.endsWith('manifest.json')?JSON.stringify(manifest):sealed,{headers:{'content-type':'application/json'}});
+  const fetcher=async (url,init)=>{assert.equal(init.redirect,'manual');return new Response(url.endsWith('manifest.json')?JSON.stringify(manifest):sealed,{headers:{'content-type':'application/json'}});};
   const env={DB:db,COVERAGE_REPOSITORY:'owner/repo',COVERAGE_PRIVATE_KEY:JSON.stringify(keys.private)};
   const first=await syncCoverage(repo,env,fetcher);assert.equal(first.inserted,40);assert.equal(first.pending,1);
   const second=await syncCoverage(repo,env,fetcher);assert.equal(second.inserted,5);assert.equal(second.pending,0);

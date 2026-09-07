@@ -34,7 +34,7 @@ export function publicAddress(ip: string): boolean {
 export async function checkDns(host: string, fetcher: typeof fetch = fetch): Promise<void> {
   const answers = await Promise.all(["A", "AAAA"].map(async type => {
     const response = await fetcher(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(host)}&type=${type}`, {
-      headers: { accept: "application/dns-json" }, signal: AbortSignal.timeout(5000), redirect: "error",
+      headers: { accept: "application/dns-json" }, signal: AbortSignal.timeout(5000), redirect: "manual",
     });
     if (!response.ok) throw new InputError("Could not verify the source hostname. Try again later.");
     const data = await response.json() as { Status: number; Answer?: { type: number; data: string }[] };

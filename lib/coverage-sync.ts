@@ -14,7 +14,7 @@ function baseUrl(env: RuntimeEnv): string {
   return `https://raw.githubusercontent.com/${env.COVERAGE_REPOSITORY}/coverage-data/`;
 }
 async function download(url: string, max: number, fetcher: typeof fetch): Promise<string> {
-  const response = await fetcher(url, { redirect: 'error', signal: AbortSignal.timeout(15000), headers: { accept: 'application/json', 'user-agent': 'CompanyLens/2.0' } });
+  const response = await fetcher(url, { redirect: 'manual', signal: AbortSignal.timeout(15000), headers: { accept: 'application/json', 'user-agent': 'CompanyLens/2.0' } });
   if (response.status === 404) throw new InputError('Waiting for the first scheduled collection to finish.');
   if (!response.ok) throw new InputError(`Scheduled coverage download returned HTTP ${response.status}.`);
   return readLimited(response, max);

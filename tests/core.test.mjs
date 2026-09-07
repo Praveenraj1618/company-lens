@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { baselineAnalysis, bm25, canonicalUrl, clusterFor, cosine, evidenceSupported, fingerprint, matchesCompany, reciprocalRankFusion } from '../lib/intelligence.ts';
 import { parseFeed, extractPage, parseDate, robotsAllows } from '../lib/sources.ts';
-import { publicUrl, publicAddress, fetchPublic, readLimited } from '../lib/safety.ts';
+import { publicUrl, publicAddress, fetchPublic, readLimited, checkDns } from '../lib/safety.ts';
 import { analyze, ask } from '../lib/provider.ts';
 import { demoArticles } from '../lib/demo.ts';
 
@@ -129,4 +129,12 @@ test('larger regional RSS responses remain bounded and default page limit is unc
  await assert.rejects(()=>readLimited(new Response(body)),/1.5 MB/);
  assert.equal(await readLimited(new Response(body),4000000),body);
  await assert.rejects(()=>readLimited(new Response('x',{headers:{'content-length':'4000001'}}),4000000),/4 MB/);
+});
+
+
+test('edge DNS requests use supported manual redirects and reject redirected answers',async()=>{
+ let calls=0;
+ await checkDns('example.com',async (_url,init)=>{calls++;assert.equal(init.redirect,'manual');return Response.json({Status:0,Answer:[{type:1,data:'93.184.216.34'}]});});
+ assert.equal(calls,2);
+ await assert.rejects(()=>checkDns('example.com',async()=>new Response(null,{status:302,headers:{location:'https://example.net/'}})),/verify the source hostname/);
 });

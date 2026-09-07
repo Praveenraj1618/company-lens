@@ -23,6 +23,9 @@ export async function authenticated(request: Request, env: RuntimeEnv): Promise<
   const host = new URL(request.url).hostname;
   if (env.ALLOW_LOCAL_DEV === "true" && ["localhost", "127.0.0.1", "terminal.local"].includes(host)) return true;
   if (env.TRUST_SITES_AUTH === "true" && request.headers.get("oai-authenticated-user-id")) return true;
+  const servicePaths = ["/api/state", "/api/sync", "/api/maintenance", "/api/diagnostics", "/api/backfill", "/api/backfill/import"];
+  if (env.SITES_SERVICE_TOKEN && servicePaths.includes(new URL(request.url).pathname) &&
+      await secretEqual(request.headers.get("oai-sites-authorization") || "", `Bearer ${env.SITES_SERVICE_TOKEN}`)) return true;
   const auth = request.headers.get("authorization");
   if (env.DASHBOARD_PASSWORD && auth?.startsWith("Basic ")) {
     try { const decoded = atob(auth.slice(6)); return await secretEqual(decoded.slice(decoded.indexOf(":") + 1), env.DASHBOARD_PASSWORD); } catch { return false; }
