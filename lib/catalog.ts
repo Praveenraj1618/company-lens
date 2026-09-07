@@ -1,7 +1,7 @@
 import sourceCatalog from './source-catalog.json' with { type: 'json' };
 import type { Company, Region, Source } from './types.ts';
 
-export const CATALOG_VERSION = '2026-09-regional-v2';
+export const CATALOG_VERSION = '2026-09-regional-v3';
 export const COLLECTION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 export const LANGUAGES = { en: 'English', ta: 'Tamil', hi: 'Hindi', kn: 'Kannada', te: 'Telugu', ml: 'Malayalam', bn: 'Bengali', gu: 'Gujarati', mr: 'Marathi', pa: 'Punjabi', or: 'Odia', as: 'Assamese', ur: 'Urdu' } as const;
 export const REGIONS = ['India', 'Tamil Nadu', 'Karnataka', 'Kerala', 'Andhra Pradesh', 'Telangana', 'Puducherry', 'Delhi', 'Haryana', 'Punjab', 'Chandigarh', 'Himachal Pradesh', 'Jammu and Kashmir', 'Ladakh', 'Uttar Pradesh', 'Uttarakhand', 'Rajasthan', 'Gujarat', 'Maharashtra', 'Goa', 'Madhya Pradesh', 'Chhattisgarh', 'Bihar', 'Jharkhand', 'Odisha', 'West Bengal', 'Assam', 'Arunachal Pradesh', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Sikkim', 'Tripura', 'North East', 'Andaman and Nicobar Islands', 'Lakshadweep', 'Dadra and Nagar Haveli and Daman and Diu', 'Global'] as const;
@@ -30,7 +30,7 @@ const companies: [string, string, string, string, string[]][] = [
   ['wipro', 'Wipro', 'wipro.com', 'Technology', ['Wipro Limited', 'விப்ரோ', 'विप्रो']],
   ['zoho', 'Zoho', 'zoho.com', 'Software', ['Zoho Corporation', 'ஜோஹோ', 'சோஹோ']],
   ['hcltech', 'HCLTech', 'hcltech.com', 'Technology', ['HCL Technologies', 'HCL Tech', 'எச்சிஎல்']],
-  ['vee-technologies', 'Vee Technologies', 'veetechnologies.com', 'Technology & business services', ['Vee Technologies Pvt Ltd', 'Vee Technologies Private Limited', 'Vee Technologies Inc', 'வீ டெக்னாலஜிஸ்', 'வீ டெக்னாலஜீஸ்']],
+  ['vee-technologies', 'Vee Technologies', 'veetechnologies.com', 'Technology & business services', ['Vee Technologies Pvt Ltd', 'Vee Technologies Private Limited', 'Vee Technologies Inc', 'வீ டெக்னாலஜிஸ்', 'வீ டெக்னாலஜீஸ்', 'ವೀ ಟೆಕ್ನಾಲಜೀಸ್', 'വീ ടെക്നോളജീസ്', 'వీ టెక్నాలజీస్']],
   ['freshworks', 'Freshworks', 'freshworks.com', 'Software', ['Freshworks Inc', 'பிரெஷ்வொர்க்ஸ்']],
   ['cognizant', 'Cognizant', 'cognizant.com', 'Technology', ['Cognizant Technology Solutions', 'காக்னிசன்ட்']],
   ['accenture', 'Accenture', 'accenture.com', 'Technology & consulting', ['Accenture plc', 'அக்சென்சர்']],

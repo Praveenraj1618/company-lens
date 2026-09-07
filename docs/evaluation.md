@@ -21,11 +21,20 @@ These are smoke-test numbers on a tiny, deliberately straightforward fixture. Do
 - Conservative tone labels, negation, exact evidence quotes and invalid model output.
 - Lexical ranking, rank fusion, vector shape checks, clustering and absent-evidence responses.
 - Durable database writes, company isolation, repeated collection, run logs and authentication.
-- Production Worker rendering, static assets, standalone HTTP, persistence across reopen and scheduler due-source selection.
+- Production Worker rendering, static assets, standalone HTTP and persistence across reopen.
+- Catalog upgrades preserving edits, three-hour due selection, full scheduled cycles and per-host concurrency.
+- Encryption round trips, tamper/wrong-key rejection, resumable snapshot imports, source switches and company isolation.
+- Public publisher IP ranges accepted without permitting private or reserved networks.
+
+## Live collection verification
+
+The first GitHub collection ran successfully on 7 September 2026. It checked all 115 feeds, produced encrypted results, and published its manifest. The encrypted payload was independently decrypted and imported through the same private sync code, producing 10 real company/article records and 115 source run records. That run found 67 readable feeds and 48 errors. It exposed an overly broad public-IP rejection, which was corrected with regression tests. Several unavailable catalog candidates were replaced with directly verified regional feeds, including Kannada, Malayalam, Telugu, Tamil and Hindi alternatives.
+
+Those numbers describe the first run, not a permanent source-availability guarantee or a claim that all 115 feeds always work. The dashboard records actual results for each subsequent run. Sources blocked by robots or access policy remain blocked; no bypass is attempted.
 
 ## What remains unverified
 
-Live publisher fetches from the authoring environment timed out, including BBC Business, ET CFO and Oneindia Tamil. Source definitions are based on published feed listings, but none is marked healthy before collection. Real model/embedding requests were not run because no API key was configured. Browser interaction and visual QA were not run. The Docker recipe was not built here.
+Real model/embedding requests were not run because no API key was configured. Browser interaction and visual QA were not run. The Docker recipe was not built here. Live translation and contextual analysis across the added languages are not benchmarked.
 
 ## A portfolio benchmark to build next
 

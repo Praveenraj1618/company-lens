@@ -540,13 +540,13 @@
     "reference": "https://indianexpress.com/rss/"
   },
   {
-    "id": "ie-nagaland",
-    "name": "The Indian Express · Nagaland",
-    "url": "https://indianexpress.com/section/north-east-india/nagaland/feed/",
+    "id": "nagaland-post",
+    "name": "Nagaland Post",
+    "url": "https://nagalandpost.com/feed/",
     "region": "Nagaland",
     "language": "en",
-    "publisher": "The Indian Express",
-    "reference": "https://indianexpress.com/rss/"
+    "publisher": "Nagaland Post",
+    "reference": "https://nagalandpost.com/feed/"
   },
   {
     "id": "ie-tripura",
@@ -567,13 +567,13 @@
     "reference": "https://hindi.oneindia.com/rss/"
   },
   {
-    "id": "oi-hindi-business",
-    "name": "Oneindia Hindi · Business",
-    "url": "https://hindi.oneindia.com/rss/feeds/hindi-business-fb.xml",
+    "id": "livehindustan-business",
+    "name": "Live Hindustan · Business",
+    "url": "https://api.livehindustan.com/feeds/rss/business/rssfeed.xml",
     "region": "India",
     "language": "hi",
-    "publisher": "Oneindia",
-    "reference": "https://hindi.oneindia.com/rss/"
+    "publisher": "Live Hindustan",
+    "reference": "https://www.livehindustan.com/rss"
   },
   {
     "id": "oi-oneindia-kannada",
@@ -585,13 +585,13 @@
     "reference": "https://kannada.oneindia.com/rss/"
   },
   {
-    "id": "oi-kannada-bengaluru",
-    "name": "Oneindia Kannada · Bengaluru",
-    "url": "https://kannada.oneindia.com/rss/feeds/kannada-bengaluru-fb.xml",
-    "region": "Karnataka",
-    "language": "kn",
-    "publisher": "Oneindia",
-    "reference": "https://kannada.oneindia.com/rss/"
+    "id": "asianet-ml",
+    "name": "Asianet News Malayalam",
+    "url": "https://www.asianetnews.com/rss",
+    "region": "Kerala",
+    "language": "ml",
+    "publisher": "Asianet News",
+    "reference": "https://www.asianetnews.com/rss"
   },
   {
     "id": "oi-oneindia-telugu",
@@ -639,31 +639,31 @@
     "reference": "https://gujarati.oneindia.com/rss/"
   },
   {
-    "id": "oi-hindi-bihar",
-    "name": "Oneindia Hindi · Bihar",
-    "url": "https://hindi.oneindia.com/rss/feeds/hindi-bihar-fb.xml",
+    "id": "livehindustan-bihar",
+    "name": "Live Hindustan · Bihar",
+    "url": "https://api.livehindustan.com/feeds/rss/bihar/rssfeed.xml",
     "region": "Bihar",
     "language": "hi",
-    "publisher": "Oneindia",
-    "reference": "https://hindi.oneindia.com/rss/"
+    "publisher": "Live Hindustan",
+    "reference": "https://www.livehindustan.com/rss"
   },
   {
-    "id": "oi-hindi-himachal-pradesh",
-    "name": "Oneindia Hindi · Himachal Pradesh",
-    "url": "https://hindi.oneindia.com/rss/feeds/hindi-himachal-pradesh-fb.xml",
-    "region": "Himachal Pradesh",
+    "id": "asianet-hi",
+    "name": "Asianet News Hindi",
+    "url": "https://hindi.asianetnews.com/rss",
+    "region": "India",
     "language": "hi",
-    "publisher": "Oneindia",
-    "reference": "https://hindi.oneindia.com/rss/"
+    "publisher": "Asianet News",
+    "reference": "https://hindi.asianetnews.com/rss"
   },
   {
-    "id": "oi-hindi-jharkhand",
-    "name": "Oneindia Hindi · Jharkhand",
-    "url": "https://hindi.oneindia.com/rss/feeds/hindi-jharkhand-fb.xml",
+    "id": "livehindustan-jharkhand",
+    "name": "Live Hindustan · Jharkhand",
+    "url": "https://api.livehindustan.com/feeds/rss/jharkhand/rssfeed.xml",
     "region": "Jharkhand",
     "language": "hi",
-    "publisher": "Oneindia",
-    "reference": "https://hindi.oneindia.com/rss/"
+    "publisher": "Live Hindustan",
+    "reference": "https://www.livehindustan.com/rss"
   },
   {
     "id": "bs-top-stories",
@@ -756,13 +756,13 @@
     "reference": "https://www.orissapost.com/feed/"
   },
   {
-    "id": "ommcom",
-    "name": "Ommcom News",
-    "url": "https://ommcomnews.com/feed/",
-    "region": "Odisha",
-    "language": "en",
-    "publisher": "Ommcom News",
-    "reference": "https://ommcomnews.com/feed/"
+    "id": "asianet-te",
+    "name": "Asianet News Telugu",
+    "url": "https://telugu.asianetnews.com/rss",
+    "region": "Andhra Pradesh",
+    "language": "te",
+    "publisher": "Asianet News",
+    "reference": "https://telugu.asianetnews.com/rss"
   },
   {
     "id": "odisha-bytes",
@@ -811,12 +811,12 @@
   },
   {
     "id": "telangana-today",
-    "name": "Telangana Today",
-    "url": "https://telanganatoday.com/feed",
+    "name": "Telangana Today · Business",
+    "url": "https://telanganatoday.com/business/feed",
     "region": "Telangana",
     "language": "en",
     "publisher": "Telangana Today",
-    "reference": "https://telanganatoday.com/feed"
+    "reference": "https://telanganatoday.com/business/feed"
   },
   {
     "id": "siasat",
@@ -828,13 +828,13 @@
     "reference": "https://www.siasat.com/feed/"
   },
   {
-    "id": "entrackr",
-    "name": "Entrackr",
-    "url": "https://entrackr.com/feed/",
-    "region": "India",
-    "language": "en",
-    "publisher": "Entrackr",
-    "reference": "https://entrackr.com/feed/"
+    "id": "asianet-kn",
+    "name": "Asianet News Kannada",
+    "url": "https://kannada.asianetnews.com/rss",
+    "region": "Karnataka",
+    "language": "kn",
+    "publisher": "Asianet News",
+    "reference": "https://kannada.asianetnews.com/rss"
   },
   {
     "id": "inc42",
@@ -855,13 +855,13 @@
     "reference": "https://www.medianama.com/feed/"
   },
   {
-    "id": "aim",
-    "name": "Analytics India Magazine",
-    "url": "https://analyticsindiamag.com/feed/",
-    "region": "Karnataka",
-    "language": "en",
-    "publisher": "Analytics India Magazine",
-    "reference": "https://analyticsindiamag.com/feed/"
+    "id": "asianet-ta",
+    "name": "Asianet News Tamil",
+    "url": "https://tamil.asianetnews.com/rss",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Asianet News",
+    "reference": "https://tamil.asianetnews.com/rss"
   },
   {
     "id": "punekar",

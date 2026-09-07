@@ -93,3 +93,10 @@ test('regional catalog has 100 Indian and 15 global feeds with valid, unique ide
  const vee=initialCompanies.find(c=>c.id==='vee-technologies');assert.ok(matchesCompany('Vee Technologies Pvt Ltd opens a training centre',vee));assert.equal(matchesCompany('Vee speaks about technology at school',vee),false);
  assert.equal(detectLanguage('ಕರ್ನಾಟಕದ ಕಂಪನಿಯ ಸುದ್ದಿ'),'kn');assert.equal(detectLanguage('కంపెనీ వార్తలు'),'te');assert.equal(detectLanguage('कंपनी','mr'),'mr');
 });
+
+
+test('public DNS classification keeps public publisher networks while excluding exact reserved prefixes',async()=>{
+ const {publicAddress}=await import('../lib/safety.ts');
+ for(const ip of ['192.0.78.24','192.0.78.25','203.0.178.1','2001:4860:4860::8888'])assert.equal(publicAddress(ip),true,ip);
+ for(const ip of ['192.0.0.1','192.0.2.1','192.168.1.1','198.51.100.12','203.0.113.5','2001:db8::1','2001:0::1','2002::1','3fff:0::1','::ffff:127.0.0.1'])assert.equal(publicAddress(ip),false,ip);
+});

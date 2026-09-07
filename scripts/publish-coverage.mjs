@@ -29,3 +29,5 @@ const commit=await api('/git/commits','POST',{message:`chore: encrypted coverage
 if(head)await api('/git/refs/heads/coverage-data','PATCH',{sha:commit.sha,force:false});
 else await api('/git/refs','POST',{ref:'refs/heads/coverage-data',sha:commit.sha});
 console.log(`Published encrypted snapshot ${metadata.id}; ${next.snapshots.length} snapshots in the seven-day sync window. Source main is unchanged.`);
+
+if(metadata.healthy===0)throw new Error('All feeds were unavailable. The encrypted error report was published; inspect the private dashboard before treating this run as usable coverage.');

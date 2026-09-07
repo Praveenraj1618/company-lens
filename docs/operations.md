@@ -15,9 +15,9 @@ npm run start:standalone
 
 Open `http://127.0.0.1:3000`. The server initializes the SQLite database and seed watchlist. It binds only to loopback by default. A model key is optional for startup.
 
-Choose a real company, edit aliases if needed, then refresh coverage. To try a controlled example without relying on a feed, use Add an article and paste an accessible excerpt that names the selected company. The original HTTPS URL is required for provenance.
+Choose a real company, edit aliases if needed, then check live sources or sync scheduled coverage. To try a controlled example without relying on a feed, use Add an article and paste an accessible excerpt that names the selected company. The original HTTPS URL is required for provenance.
 
-All Aster Mobility data is a fictional demonstration, including its source outlets and prewritten Tamil translation. Real watchlist companies start with zero articles. Collecting feeds updates real companies, never the demonstration.
+All Aster Mobility data is a fictional demonstration, including its source outlets and prewritten Tamil translation. Real watchlist companies start without seeded news; scheduled sync or live checks populate their timelines. Collecting feeds updates real companies, never the demonstration.
 
 ## Model configuration
 
@@ -51,18 +51,31 @@ The Docker image is provided as a deployment recipe. The Node runtime is covered
 
 ## Scheduling and uptime
 
-The Node/Docker collector runs when `SCHEDULE_ENABLED=true`. It checks one source at startup and every five minutes, choosing only sources not fetched in the last 24 hours. With eight sources, the initial rotation takes up to about 40 minutes. Manual Refresh coverage checks all enabled sources immediately. Pause an individual source with its switch.
+### Existing private Site
 
-Closing a browser does not stop the Node/Docker collector. Stopping the process, sleeping the laptop, or losing internet access does. Use an always-on host for unattended monitoring.
+The deployed project uses the `Scheduled company coverage` GitHub Actions workflow. Its UTC cron is `17 */3 * * *`. It also runs on relevant catalog/collector pushes and supports manual **Run workflow** in GitHub.
 
-The private Sites preview provides optional refresh while its tab is open. It does not provision an always-on timer. For a standalone Worker, configure its `scheduled` handler with a Cron Trigger. Alternatively configure the included GitHub workflow with:
+The runner checks the 115 public catalog feeds against the 20 public built-in companies. It encrypts results using `config/collector-public-key.json`, then publishes ciphertext and a timestamp/hash manifest to the separate `coverage-data` branch. The workflow's repository-scoped `GITHUB_TOKEN` has `contents: write` for this publication. It never receives the private Site key or user database.
 
-- Repository variable `COMPANY_LENS_URL`: your reachable standalone HTTPS app origin.
-- Repository secret `CRON_SECRET`: a random token of at least 32 bytes, also stored in the application's environment.
+The private Site has server environment values `COVERAGE_REPOSITORY=Praveenraj1618/company-lens` and a secret `COVERAGE_PRIVATE_KEY` containing the RSA private JWK. It decrypts and imports results only after an authenticated visit. **Sync results** resumes pending work. Source switches control which records enter the workspace. Pausing automatic sync does not stop the GitHub job; disable the workflow in GitHub to pause unattended collection.
 
-Leave the variable empty to keep the GitHub schedule inactive. The workflow refuses redirects so a token is not forwarded to another host. It cannot use an owner-private Sites preview URL because the platform requires browser sign-in. GitHub schedules may run late; do not use them for guaranteed delivery times.
+The active manifest retains 56 runs (approximately seven days). Returning after that window can miss expired coverage; old ciphertext can remain in Git history. Source `main`, user-added companies, manual excerpts, questions and private settings are not written by the scheduled publisher.
 
-See the official [GitHub schedule documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule) and [Worker Cron Trigger documentation](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+A custom company or source added inside the private app is not silently exported to GitHub. It uses live checks/browser collection, or the standalone scheduler described below. To schedule a new public catalog entry on GitHub, edit `lib/catalog.ts` / `lib/source-catalog.json` and push it.
+
+### Standalone Node / Docker
+
+With `SCHEDULE_ENABLED=true`, the running process checks due sources at startup and every five minutes. **All enabled sources become due after three hours**, and a cycle processes them with at most three concurrent tasks, serialized per hostname. A persisted source timestamp prevents repeated checks inside that interval. Pausing automatic collection or individual sources is respected.
+
+Closing the browser does not stop this collector. Stopping the process, sleeping the laptop or losing internet access does. Use an always-on host for continuous operation. This route handles custom workspace companies and sources, unlike the fixed public GitHub catalog.
+
+A separately deployed Worker can use the exported `scheduled` handler with its own Cron Trigger. The Sites deployment does not configure a native Cron Trigger; GitHub performs unattended collection for that Site. A self-hosted HTTPS service can also use the optional `scripts/trigger-collection.mjs` bearer-token helper with `COMPANY_LENS_URL` and `CRON_SECRET`. It cannot call through the private Sites browser sign-in gate.
+
+GitHub schedules can run late and inactive schedules can be disabled. Inspect [workflow runs](https://github.com/Praveenraj1618/company-lens/actions/workflows/collect.yml) and the dashboard's last-run time. See the official [GitHub schedule documentation](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule) and [Worker Cron Trigger documentation](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+
+### Key handling for a new installation
+
+The committed public key belongs to this private Site. A fork cannot decrypt its snapshots. For a separate installation, generate a new key pair and configure that installation's server secret. `scripts/generate-collector-key.mjs` refuses to overwrite an existing key deliberately. Back up the private key securely before any rotation; retained snapshots need their original key. Never put private key JSON in Git, client code or workflow logs.
 
 ## Source failures
 
@@ -97,9 +110,11 @@ All application endpoints require workspace/standalone authentication, except th
 | POST | `/api/import` | Fetch an article or import a pasted excerpt |
 | POST | `/api/ask` | Retrieve evidence and optionally synthesize a cited answer |
 | POST | `/api/enrich` | Model analysis/embeddings for up to three stored articles |
-| PATCH | `/api/settings` | Configure browser refresh |
+| PATCH | `/api/settings` | Configure automatic sync / standalone collection |
 | POST | `/api/tick` | Browser-driven collection of one due source |
-| POST | `/api/cron` | Machine-authenticated collection of one due source |
+| POST | `/api/cron` | Machine-authenticated cycle over all due sources |
+| POST | `/api/sync` | Verify, decrypt and resume importing a scheduled snapshot |
+| PATCH | `/api/sources/bulk` | Enable or pause a filtered group of sources |
 | GET | `/api/export?company=...` | Markdown coverage digest |
 
 ## Verification commands

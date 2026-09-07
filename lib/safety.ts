@@ -15,17 +15,22 @@ export function publicUrl(raw: string): URL {
 }
 export function publicAddress(ip: string): boolean {
   if (ip.includes(":")) {
-    const v = ip.toLowerCase();
-    // Accept global unicast only; IPv4-mapped/transition addresses are excluded.
-    return /^[23][0-9a-f]{3}:/.test(v) && !/^200[12]:/.test(v);
+    // Limit to global unicast; exclude special-purpose, documentation and transition ranges.
+    if (!/^[0-9a-f:]+$/i.test(ip) || !/^[23][0-9a-f]{3}:/i.test(ip)) return false;
+    const [first, second = "0"] = ip.split(":").map(v => v || "0");
+    const a = parseInt(first, 16), b = parseInt(second, 16);
+    return !(a === 0x2002 || (a === 0x2001 && (b < 0x200 || b === 0xdb8)) || (a === 0x3fff && b < 0x1000));
   }
   const n = ip.split(".").map(Number);
   if (n.length !== 4 || n.some(v => !Number.isInteger(v) || v < 0 || v > 255)) return false;
-  const [a, b] = n;
+  const [a, b, c] = n;
+  // /24 special-use blocks must not exclude public hosts in the surrounding /16.
   return !(a === 0 || a === 10 || a === 127 || a >= 224 || (a === 100 && b >= 64 && b <= 127) ||
     (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) ||
-    (a === 192 && [0, 168].includes(b)) || (a === 198 && [18, 19, 51].includes(b)) || (a === 203 && b === 0));
+    (a === 192 && (b === 168 || (b === 0 && [0, 2].includes(c)) || (b === 88 && c === 99))) ||
+    (a === 198 && ([18, 19].includes(b) || (b === 51 && c === 100))) || (a === 203 && b === 0 && c === 113));
 }
+
 export async function checkDns(host: string, fetcher: typeof fetch = fetch): Promise<void> {
   const answers = await Promise.all(["A", "AAAA"].map(async type => {
     const response = await fetcher(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(host)}&type=${type}`, {

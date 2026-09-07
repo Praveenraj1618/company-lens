@@ -81,18 +81,22 @@ export function baselineAnalysis(title: string, text: string): Analysis {
 
 export function bm25(query: string, docs: { id: string; text: string }[]): { id: string; score: number }[] {
   const terms = [...new Set(tokens(query))];
-  const corpus = docs.map(d => tokens(d.text));
-  const average = corpus.reduce((n, d) => n + d.length, 0) / Math.max(docs.length, 1);
-  return docs.map((doc, i) => {
-    const score = terms.reduce((sum, term) => {
-      const tf = corpus[i].filter(t => t === term).length;
-      const df = corpus.filter(d => d.includes(term)).length;
-      const idf = Math.log(1 + (docs.length - df + .5) / (df + .5));
-      return sum + idf * (tf * 2.5) / (tf + 1.5 * (.25 + .75 * corpus[i].length / Math.max(average, 1)));
-    }, 0);
-    return { id: doc.id, score };
-  }).filter(d => d.score > 0).sort((a, b) => b.score - a.score);
+  if (!terms.length || !docs.length) return [];
+  const frequency = new Map<string, number>();
+  const corpus = docs.map(d => {
+    const words = tokens(d.text), counts = new Map<string, number>();
+    for (const word of words) counts.set(word, (counts.get(word) ?? 0) + 1);
+    for (const term of terms) if (counts.has(term)) frequency.set(term, (frequency.get(term) ?? 0) + 1);
+    return { length: words.length, counts };
+  });
+  const average = corpus.reduce((n, d) => n + d.length, 0) / docs.length;
+  const idf = new Map(terms.map(term => { const df = frequency.get(term) ?? 0; return [term, Math.log(1 + (docs.length - df + .5) / (df + .5))]; }));
+  return docs.map((doc, i) => ({ id: doc.id, score: terms.reduce((sum, term) => {
+    const tf = corpus[i].counts.get(term) ?? 0;
+    return sum + idf.get(term)! * (tf * 2.5) / (tf + 1.5 * (.25 + .75 * corpus[i].length / Math.max(average, 1)));
+  }, 0) })).filter(d => d.score > 0).sort((a, b) => b.score - a.score);
 }
+
 export function cosine(a: number[], b: number[]): number {
   if (a.length !== b.length || !a.length) return 0;
   let dot = 0, x = 0, y = 0;

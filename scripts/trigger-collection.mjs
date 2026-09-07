@@ -5,5 +5,6 @@ if(base.protocol!=='https:'||base.username||base.password)throw new Error('The c
 const response=await fetch(new URL('/api/cron',base),{method:'POST',headers:{authorization:`Bearer ${CRON_SECRET}`},redirect:'error',signal:AbortSignal.timeout(480000)});
 if(!response.ok)throw new Error(`Collection request returned HTTP ${response.status}.`);
 const data=await response.json();
-console.log(data.run?`Source ${data.run.sourceId}: ${data.run.inserted} new records, status ${data.run.status}.`:'No source is due.');
-if(data.run?.status==='error')throw new Error('Source collection failed. Review the application collection history.');
+const runs=Array.isArray(data.runs)?data.runs:[];
+console.log(`${runs.length} due sources checked; ${runs.reduce((n,r)=>n+r.inserted,0)} new records.`);
+if(runs.some(r=>r.status==='error'))throw new Error('Some sources failed. Review the application collection history.');
