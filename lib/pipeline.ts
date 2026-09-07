@@ -1,3 +1,4 @@
+import { COLLECTION_INTERVAL_MS } from "./catalog.ts";
 import { Repository } from "../db/index.ts";
 import { baselineAnalysis, canonicalUrl, clusterFor, fingerprint, matchesCompany } from "./intelligence.ts";
 import { analyze, embed } from "./provider.ts";
@@ -42,7 +43,7 @@ export async function ingestSource(repo: Repository, config: ModelConfig, source
       if (matches.length) run.matched++;
       for (const company of matches) {
         if (await repo.exists(company.id, canonicalUrl(item.url))) { run.duplicates++; continue; }
-        if (run.inserted >= MAX_NEW_ARTICLES_PER_RUN) { warnings.add("Run limit reached (8 new company/article records); remaining items can be collected in a later run."); continue; }
+        if (run.inserted >= (config.OPENAI_API_KEY ? MAX_NEW_ARTICLES_PER_RUN : 80)) { warnings.add("Run limit reached; remaining items can be collected in a later run."); continue; }
         if (!cache.has(company.id)) cache.set(company.id, await repo.articles(company.id));
         const { article, warning } = await makeArticle(config, item, source, company, cache.get(company.id)!);
         if (warning) warnings.add(warning);
@@ -63,14 +64,31 @@ export async function ingestSource(repo: Repository, config: ModelConfig, source
   }
   return run;
 }
-// Each tick handles one due source. An hourly cron checks all 8 defaults in a day.
-// A DB lease prevents overlap between browser, cron and machine invocations.
-export async function scheduledTick(repo: Repository, config: ModelConfig): Promise<Run | null> {
+// A small browser tick; standalone cycles drain every due source with bounded concurrency.
+export async function scheduledTick(repo: Repository, config: ModelConfig, loader = loadSource): Promise<Run | null> {
   await repo.initialize();
-  const due = (await repo.sources()).filter(s => s.enabled && (!s.lastFetchedAt || Date.now() - Date.parse(s.lastFetchedAt) >= 86400000))
+  if (await repo.getSetting("autoRefresh") === "false") return null;
+  const due = (await repo.sources()).filter(s => s.enabled && (!s.lastFetchedAt || Date.now() - Date.parse(s.lastFetchedAt) >= COLLECTION_INTERVAL_MS))
     .sort((a, b) => (a.lastFetchedAt ?? "").localeCompare(b.lastFetchedAt ?? ""));
   if (!due.length) return null;
-  const run = await ingestSource(repo, config, due[0].id);
+  const run = await ingestSource(repo, config, due[0].id, loader);
   await repo.setSetting("lastScheduledAt", new Date().toISOString());
   return run;
+}
+export async function scheduledCycle(repo: Repository, config: ModelConfig, loader = loadSource): Promise<Run[]> {
+  await repo.initialize();
+  if (await repo.getSetting("autoRefresh") === "false" || !await repo.acquire("scheduled-cycle", 1800)) return [];
+  try {
+    const due = (await repo.sources()).filter(s => s.enabled && (!s.lastFetchedAt || Date.now() - Date.parse(s.lastFetchedAt) >= COLLECTION_INTERVAL_MS));
+    let cursor = 0; const runs: Run[] = []; const hosts = new Map<string, Promise<void>>();
+    await Promise.all(Array.from({ length: 3 }, async () => {
+      while (cursor < due.length) {
+        const source = due[cursor++], host = new URL(source.url).hostname, before = hosts.get(host) ?? Promise.resolve();
+        let release!: () => void; hosts.set(host, new Promise<void>(resolve => { release = resolve; })); await before;
+        try { runs.push(await ingestSource(repo, config, source.id, loader)); } catch (error) { console.error("Scheduled source failed", source.id, error instanceof Error ? error.message : "Unknown error"); } finally { release(); }
+      }
+    }));
+    if (runs.length) await repo.setSetting("lastScheduledAt", new Date().toISOString());
+    return runs;
+  } finally { await repo.release("scheduled-cycle"); }
 }

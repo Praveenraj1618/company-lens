@@ -1,0 +1,13 @@
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { collectCatalog, sealSnapshot } from '../lib/scheduled-coverage.ts';
+const directory=resolve(process.env.COLLECTION_OUTPUT_DIR || '.data/scheduled');
+await mkdir(directory,{recursive:true});
+const key=JSON.parse(await readFile('config/collector-public-key.json','utf8'));
+if(key.d)throw new Error('The collector must only receive a PUBLIC key.');
+const snapshot=await collectCatalog();
+const healthy=snapshot.sources.filter(s=>s.status==='healthy').length;
+await writeFile(resolve(directory,'snapshot.json'),await sealSnapshot(snapshot,key));
+await writeFile(resolve(directory,'metadata.json'),JSON.stringify({id:snapshot.id,finishedAt:snapshot.finishedAt,healthy,failed:snapshot.sources.length-healthy,matched:snapshot.items.length}));
+console.log(`Checked ${snapshot.sources.length} feeds: ${healthy} readable, ${snapshot.sources.length-healthy} unavailable; ${snapshot.items.length} matching company/article records encrypted.`);
+if(!healthy)console.warn('No feeds were readable. The encrypted report retains the errors for the private dashboard.');

@@ -6,7 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { Readable } from 'node:stream';
 import { openDatabase } from './sqlite.mjs';
 import { Repository } from '../db/index.ts';
-import { scheduledTick } from '../lib/pipeline.ts';
+import { scheduledCycle } from '../lib/pipeline.ts';
 
 const MIME = { '.css':'text/css', '.js':'text/javascript', '.mjs':'text/javascript', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.woff2':'font/woff2', '.ico':'image/x-icon', '.json':'application/json' };
 export function localEnvironment() {
@@ -49,7 +49,7 @@ export async function createRuntime(options = {}) {
     }catch(e){console.error('Request failed:',e.message);if(!res.headersSent)res.writeHead(500,{'content-type':'text/plain'});res.end('Unable to complete request.');}
   });
   let ticking=false;
-  const tick=async()=>{if(ticking)return;ticking=true;try{const run=await scheduledTick(new Repository(db),env);if(run)console.log(`Collection ${run.status}: ${run.inserted} new records.`);}catch(e){console.error('Scheduled collection failed:',e.message);}finally{ticking=false;}};
+  const tick=async()=>{if(ticking)return;ticking=true;try{const runs=await scheduledCycle(new Repository(db),env);if(runs.length)console.log(`Collection: ${runs.length} sources checked; ${runs.reduce((n,r)=>n+r.inserted,0)} new records.`);}catch(e){console.error('Scheduled collection failed:',e.message);}finally{ticking=false;}};
   let timer;
   const startScheduler=()=>{if(config.SCHEDULE_ENABLED==='true'){timer=setInterval(()=>ctx.waitUntil(tick()),300000);timer.unref();ctx.waitUntil(tick());}};
   const close=async()=>{if(timer)clearInterval(timer);await new Promise(resolveClose=>server.close(resolveClose));await Promise.allSettled([...pending]);db.close();};

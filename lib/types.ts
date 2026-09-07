@@ -31,9 +31,13 @@ export interface Run {
   finishedAt: string | null; status: "running" | "success" | "partial" | "error";
   scanned: number; matched: number; inserted: number; duplicates: number; error: string | null;
 }
+export interface CollectionSchedule {
+  mode: "github" | "server" | "browser"; intervalHours: 3; status: "waiting" | "current" | "delayed" | "paused" | "error";
+  lastRunAt: string | null; lastSyncedAt: string | null; nextRunAt: string | null; healthy: number; failed: number; pending: number; error: string | null;
+}
 export interface AppState {
   companies: Company[]; sources: Source[]; articles: Article[]; runs: Run[];
-  capabilities: { llm: boolean; embeddings: boolean; model: string; autoRefresh: boolean; lastScheduledAt: string | null };
+  capabilities: { llm: boolean; embeddings: boolean; model: string; autoRefresh: boolean; lastScheduledAt: string | null; schedule: CollectionSchedule };
 }
 export interface Citation { id: string; title: string; url: string; quote: string; sourceName: string }
 export interface Answer {

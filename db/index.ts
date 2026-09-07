@@ -20,6 +20,7 @@ export class Repository {
     if (ready === CATALOG_VERSION) return;
     const statements = initialCompanies.map(c => this.db.prepare("INSERT OR IGNORE INTO companies (id,name,domain,industry,aliases,description,demo,created_at) VALUES (?,?,?,?,?,?,0,?)").bind(c.id,c.name,c.domain,c.industry,JSON.stringify(c.aliases),c.description,c.createdAt));
     statements.push(...initialSources.map(s => this.db.prepare("INSERT OR IGNORE INTO sources (id,name,url,kind,region,language,enabled,status) VALUES (?,?,?,?,?,?,1,'unfetched')").bind(s.id,s.name,s.url,s.kind,s.region,s.language)));
+    statements.push(this.db.prepare("INSERT OR IGNORE INTO settings (key,value) VALUES ('autoRefresh','true')"));
     statements.push(this.db.prepare("INSERT OR IGNORE INTO settings (key,value) VALUES ('initialized','1')"));
     // Keep batches small for D1; retries resume safely without changing user edits.
     for (let i = 0; i < statements.length; i += 40) await this.db.batch(statements.slice(i, i + 40));

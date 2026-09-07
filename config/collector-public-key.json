@@ -1,0 +1,10 @@
+{
+  "key_ops": [
+    "wrapKey"
+  ],
+  "ext": true,
+  "alg": "RSA-OAEP-256",
+  "kty": "RSA",
+  "n": "w9rxzFBJSEFOW13MQJrSYqEeQn-tg26pKdX6EUbXgpJnaMFdz0uUWInTXBzlsZCpxDjKqAlM66PXw0MFcE_8XrFX7QuuoAsAQEYKTsxaxWWQiYAEiG1Y2a4MuXRRA_2tlhU2f2ll3DPO50S16_2_T3gTRKVnWBIG7HRysH98GZ2UyVVZpo0-M2s3kXqvktwwbBeXj1SO5KxgsRIMUuHOweNEWAsRm_PJ5fExWzDh0iD7mnsaLNrhVHCFW-8jBGvnmjF2fjQQq3CyrRLi3JeqSN6zEkkJkiTKUVwX9fFSojdAufoY7nqHLByblRDPb3Cn05_myZp_tg1NL4tai1ZH9z1QzHja2d8xoVIq55Q82T2o4bHGWnr4bGPW8SANVsqmbG5KDQmbaWbVtFXcQ9u1lfQB0e78DwcT4RrYMcXObZk-WXu_uaFTx5anZGswZMgToqIavmvmT9ctSx9AERqUHBvkVdNoy5ZdwSgGbd3C2RKeIRZRBISKT358fZmdo2zl",
+  "e": "AQAB"
+}

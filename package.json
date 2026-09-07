@@ -14,7 +14,7 @@
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
     "typecheck": "tsc --noEmit",
-    "test:core": "node --test tests/core.test.mjs tests/api.test.mjs",
+    "test:core": "node --test tests/core.test.mjs tests/api.test.mjs tests/scheduled.test.mjs",
     "start:standalone": "node --use-env-proxy scripts/server.mjs",
     "evaluate": "node scripts/evaluate.mjs",
     "test:release": "node --test tests/rendered-html.test.mjs tests/standalone.test.mjs"

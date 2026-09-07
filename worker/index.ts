@@ -2,7 +2,7 @@
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
 import { handleApi, authenticated } from "../lib/api";
-import { scheduledTick } from "../lib/pipeline";
+import { scheduledCycle } from "../lib/pipeline";
 import { Repository } from "../db";
 import type { RuntimeEnv } from "../lib/runtime";
 
@@ -30,7 +30,7 @@ interface ExecutionContext {
 
 const worker = {
   async scheduled(_event: unknown, env: Env, ctx: ExecutionContext) {
-    ctx.waitUntil(scheduledTick(new Repository(env.DB), env));
+    ctx.waitUntil(scheduledCycle(new Repository(env.DB), env));
   },
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);

@@ -1,10 +1,11 @@
 import { z } from "zod";
 import { REGIONS, LANGUAGES } from "./catalog.ts";
+import { scheduleStatus, syncCoverage } from "./coverage-sync.ts";
 import { Repository } from "../db/index.ts";
 import { demoArticles, demoCompany } from "./demo.ts";
 import { canonicalUrl, detectLanguage, matchesCompany } from "./intelligence.ts";
 import { ask, analyze, embed } from "./provider.ts";
-import { ingestSource, makeArticle, scheduledTick } from "./pipeline.ts";
+import { ingestSource, makeArticle, scheduledCycle, scheduledTick } from "./pipeline.ts";
 import { loadSource, parseDate } from "./sources.ts";
 import { InputError, publicUrl, readLimited, sameOriginWrite } from "./safety.ts";
 import type { RuntimeEnv } from "./runtime.ts";
@@ -55,7 +56,7 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
     if (path === "/api/cron") {
       if (request.method !== "POST") return json({ error: "Use POST." }, 405);
       if (!env.CRON_SECRET || !await secretEqual(request.headers.get("authorization") ?? "", `Bearer ${env.CRON_SECRET}`)) return json({ error: "Unauthorized." }, 401);
-      const run = await scheduledTick(new Repository(env.DB), env); return json({ run });
+      const runs = await scheduledCycle(new Repository(env.DB), env); return json({ runs });
     }
     if (!await authenticated(request, env)) return new Response(JSON.stringify({ error: "Sign in to access this workspace." }), { status: 401, headers: { "content-type": "application/json", "cache-control": "no-store", ...(env.DASHBOARD_PASSWORD ? { "www-authenticate": 'Basic realm="Company Lens", charset="UTF-8"' } : {}) } });
     if (!["GET", "HEAD"].includes(request.method)) sameOriginWrite(request);
@@ -64,9 +65,10 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
     if (path === "/api/state" && request.method === "GET") {
       const companyId = url.searchParams.get("company") ?? demoCompany.id;
       const [companies, sources, articles, runs, autoRefresh, lastScheduledAt] = await Promise.all([repo.companies(), repo.sources(), companyId === demoCompany.id ? demoArticles : repo.articles(companyId), repo.runs(), repo.getSetting("autoRefresh"), repo.getSetting("lastScheduledAt")]);
-      const state: AppState = { companies: [demoCompany, ...companies], sources, articles: articles.map(a => ({ ...a, embedding: null })), runs, capabilities: { llm: !!env.OPENAI_API_KEY, embeddings: !!env.OPENAI_API_KEY, model: env.OPENAI_MODEL || "gpt-4o-mini", autoRefresh: autoRefresh === "true", lastScheduledAt } };
+      const state: AppState = { companies: [demoCompany, ...companies], sources, articles: articles.map(a => ({ ...a, embedding: null })), runs, capabilities: { llm: !!env.OPENAI_API_KEY, embeddings: !!env.OPENAI_API_KEY, model: env.OPENAI_MODEL || "gpt-4o-mini", autoRefresh: autoRefresh !== "false", lastScheduledAt, schedule: await scheduleStatus(repo, env) } };
       return json(state);
     }
+    if (path === "/api/sync" && request.method === "POST") return json(await syncCoverage(repo, env));
     if (path === "/api/companies" && request.method === "POST") {
       const data = companyInput.parse(await payload(request)), current = await repo.companies();
       if (data.id && !current.some(c => c.id === data.id)) throw new InputError("Company was not found.");
@@ -85,6 +87,14 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
       const data = z.object({ id: z.string().max(80), enabled: z.boolean() }).parse(await payload(request));
       if (!(await repo.sources()).some(s => s.id === data.id)) throw new InputError("Source was not found.");
       await repo.toggleSource(data.id, data.enabled); return json({ saved: true });
+    }
+    if (path === "/api/sources/bulk" && request.method === "PATCH") {
+      const data = z.object({ ids: z.array(z.string().max(80)).min(1).max(250), enabled: z.boolean() }).parse(await payload(request));
+      const sources = await repo.sources();
+      if (data.ids.some(id => !sources.some(s => s.id === id))) throw new InputError("A selected source was not found.");
+      const statements = [...new Set(data.ids)].map(id => repo.db.prepare("UPDATE sources SET enabled=? WHERE id=?").bind(Number(data.enabled), id));
+      for (let i = 0; i < statements.length; i += 40) await repo.db.batch(statements.slice(i, i + 40));
+      return json({ saved: statements.length });
     }
     if (path === "/api/ingest" && request.method === "POST") {
       const data = z.object({ sourceId: z.string().min(1).max(80) }).parse(await payload(request));

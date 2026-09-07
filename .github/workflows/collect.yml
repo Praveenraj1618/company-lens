@@ -2,26 +2,40 @@ name: Scheduled company coverage
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17 */3 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/collect.yml'
+      - 'lib/source-catalog.json'
+      - 'lib/catalog.ts'
+      - 'lib/scheduled-coverage.ts'
+      - 'lib/sources.ts'
+      - 'lib/safety.ts'
+      - 'scripts/collect-scheduled.mjs'
+      - 'scripts/publish-coverage.mjs'
+      - 'config/collector-public-key.json'
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: company-lens-collector
   cancel-in-progress: false
 jobs:
   collect:
-    # Opt-in: configure a publicly reachable self-hosted endpoint and CRON_SECRET.
-    # Private Sites URLs require browser sign-in and cannot use this workflow.
-    if: vars.COMPANY_LENS_URL != ''
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Collect one due source
+          cache: npm
+      - run: npm ci
+      - name: Collect the public catalog and encrypt the results
+        run: node scripts/collect-scheduled.mjs
+      - name: Publish encrypted coverage to its separate branch
         env:
-          COMPANY_LENS_URL: ${{ vars.COMPANY_LENS_URL }}
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
-        run: node scripts/trigger-collection.mjs
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/publish-coverage.mjs
