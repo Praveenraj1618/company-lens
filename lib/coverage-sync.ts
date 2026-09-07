@@ -41,7 +41,7 @@ export async function syncCoverage(repo: Repository, env: RuntimeEnv, fetcher: t
     const completed = await repo.getSetting('coverageCompleted') ?? '';
     const queue = manifest.snapshots.filter(s => s.id > completed).sort((a, b) => a.id.localeCompare(b.id));
     if (!queue.length) {
-      await repo.setSetting('coverageStatus', JSON.stringify({ ...status, pending: 0, error: null }));
+      await repo.setSetting('coverageStatus', JSON.stringify({ ...JSON.parse(await repo.getSetting('coverageStatus') || '{}'), ...status, pending: 0, pendingRecords: 0, error: null }));
       return { inserted: 0, pending: 0 };
     }
     const target = queue[0];
@@ -87,7 +87,7 @@ export async function syncCoverage(repo: Repository, env: RuntimeEnv, fetcher: t
     }
     const pending = queue.length - (done ? 1 : 0);
     await repo.setSetting('coverageCursor', JSON.stringify(cursor));
-    await repo.setSetting('coverageStatus', JSON.stringify({ ...status, lastRunAt: done ? snapshot.finishedAt : status.lastRunAt, lastSyncedAt: new Date().toISOString(), healthy: snapshot.sources.filter(s => s.status === 'healthy').length, failed: snapshot.sources.filter(s => s.status === 'error').length, pending, error: null }));
+    await repo.setSetting('coverageStatus', JSON.stringify({ ...status, lastRunAt: done ? snapshot.finishedAt : status.lastRunAt, lastSyncedAt: new Date().toISOString(), healthy: snapshot.sources.filter(s => s.status === 'healthy').length, failed: snapshot.sources.filter(s => s.status === 'error').length, pending, collectedRecords: snapshot.items.length, snapshotAt: snapshot.finishedAt, pendingRecords: snapshot.items.length-cursor.offset, error: null }));
     return { inserted, pending };
   } catch (error) {
     const status = await scheduleStatus(repo, env);

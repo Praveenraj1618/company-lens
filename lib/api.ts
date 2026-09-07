@@ -1,3 +1,8 @@
+import { aiStatus, saveAiSettings, modelEnvironment } from './ai-settings.ts';
+import { diagnostics, maintenance } from './maintenance.ts';
+import { createBackfill, importHistoricalUrls, type BackfillData } from './backfill.ts';
+import { jobs, saveJob } from './jobs.ts';
+import { uploadDocument, reviewPage, type DocumentData } from './documents.ts';
 import { z } from "zod";
 import { REGIONS, LANGUAGES } from "./catalog.ts";
 import { scheduleStatus, syncCoverage } from "./coverage-sync.ts";
@@ -25,7 +30,7 @@ export async function authenticated(request: Request, env: RuntimeEnv): Promise<
   if (env.TRUST_SITES_AUTH === "true" && request.headers.get("oai-authenticated-user-id")) return true;
   const servicePaths = ["/api/state", "/api/sync", "/api/maintenance", "/api/diagnostics", "/api/backfill", "/api/backfill/import"];
   if (env.SITES_SERVICE_TOKEN && servicePaths.includes(new URL(request.url).pathname) &&
-      await secretEqual(request.headers.get("oai-sites-authorization") || "", `Bearer ${env.SITES_SERVICE_TOKEN}`)) return true;
+      await secretEqual(request.headers.get("x-company-lens-service") || "", env.SITES_SERVICE_TOKEN)) return true;
   const auth = request.headers.get("authorization");
   if (env.DASHBOARD_PASSWORD && auth?.startsWith("Basic ")) {
     try { const decoded = atob(auth.slice(6)); return await secretEqual(decoded.slice(decoded.indexOf(":") + 1), env.DASHBOARD_PASSWORD); } catch { return false; }
@@ -50,7 +55,7 @@ function errorResponse(error: unknown): Response {
 export function digest(company: Company, articles: Article[]): string {
   const seen = new Set<string>();
   const unique = articles.filter(a => { if (seen.has(a.clusterId)) return false; seen.add(a.clusterId); return true; });
-  return `# ${company.name} — coverage digest\n\nGenerated ${new Date().toISOString()}\n\n${company.demo ? "FICTIONAL DEMONSTRATION. These are invented scenarios.\n\n" : ""}Coverage is limited to the latest 300 stored articles from monitored sources. Related coverage is grouped by a conservative text-similarity heuristic, not independently verified.\n\n` + unique.map(a => `## ${a.analysis.translatedTitle || a.title}\n\n${a.publishedAt ? a.publishedAt.slice(0, 10) : "Publication date unknown"} · ${a.region} · ${a.analysis.eventType} · ${a.analysis.sentiment}\n\n${a.analysis.summary}\n\nSource: ${a.sourceName}\n${a.url}\n\nAnalysis: ${a.analysis.mode}; content: ${a.contentScope}.\n\n${a.analysis.impacts.map(i => `- ${i.stakeholder} (${i.direction}): ${i.explanation}`).join("\n")}\n\nUncertainty: ${a.analysis.uncertainty}\n`).join("\n---\n\n");
+  return `# ${company.name} — coverage digest\n\nGenerated ${new Date().toISOString()}\n\n${company.demo ? "FICTIONAL DEMONSTRATION. These are invented scenarios.\n\n" : ""}Coverage is limited to the latest 1500 stored articles from monitored sources. Related coverage is grouped by a conservative text-similarity heuristic, not independently verified.\n\n` + unique.map(a => `## ${a.analysis.translatedTitle || a.title}\n\n${a.publishedAt ? a.publishedAt.slice(0, 10) : "Publication date unknown"} · ${a.region} · ${a.analysis.eventType} · ${a.analysis.sentiment}\n\n${a.analysis.summary}\n\nSource: ${a.sourceName}\n${a.url}\n\nAnalysis: ${a.analysis.mode}; content: ${a.contentScope}.\n\n${a.analysis.impacts.map(i => `- ${i.stakeholder} (${i.direction}): ${i.explanation}`).join("\n")}\n\nUncertainty: ${a.analysis.uncertainty}\n`).join("\n---\n\n");
 }
 export async function handleApi(request: Request, env: RuntimeEnv): Promise<Response> {
   const url = new URL(request.url), path = url.pathname;
@@ -64,6 +69,38 @@ export async function handleApi(request: Request, env: RuntimeEnv): Promise<Resp
     if (!await authenticated(request, env)) return new Response(JSON.stringify({ error: "Sign in to access this workspace." }), { status: 401, headers: { "content-type": "application/json", "cache-control": "no-store", ...(env.DASHBOARD_PASSWORD ? { "www-authenticate": 'Basic realm="Company Lens", charset="UTF-8"' } : {}) } });
     if (!["GET", "HEAD"].includes(request.method)) sameOriginWrite(request);
     const repo = new Repository(env.DB);
+    if (path === '/api/ai/config' && request.method === 'GET') return json(await aiStatus(repo,env));
+    if (path === '/api/ai/config' && request.method === 'POST') return json(await saveAiSettings(repo,env,await payload(request)));
+    if (path === '/api/ai/config' && request.method === 'DELETE') { await repo.db.prepare("DELETE FROM settings WHERE key='aiCredentials'").run(); return json(await aiStatus(repo,env)); }
+    if (path === '/api/diagnostics' && request.method === 'GET') return json(await diagnostics(repo,env));
+    if (path === '/api/maintenance' && request.method === 'POST') return json(await maintenance(repo,env));
+    if (path === '/api/backfill/import' && request.method === 'POST') return json(await importHistoricalUrls(repo,await payload(request)),201);
+    if (path === '/api/backfill' && request.method === 'POST') return json(await createBackfill(repo,await payload(request)),201);
+    if (path === '/api/backfill' && request.method === 'GET') return json({jobs:(await jobs<BackfillData>(repo,'backfill')).map(j=>({...j,data:{...j.data,pendingCandidates:j.data.candidates.length-j.data.offset,candidates:undefined}}))});
+    if (path === '/api/backfill' && request.method === 'PATCH') {
+      const data=z.object({id:z.string(),action:z.enum(['pause','resume','retry'])}).parse(await payload(request));
+      const job=(await jobs<BackfillData>(repo,'backfill')).find(j=>j.id===data.id); if (!job) throw new InputError('Job was not found.');
+      if (data.action==='retry') { job.data.cursor=job.data.from; job.data.windows=0; job.data.candidates=[]; job.data.offset=0; }
+      job.status=data.action==='pause'?'paused':'queued'; job.error=null; await saveJob(repo,job); return json({saved:true});
+    }
+    if (path === '/api/documents' && request.method === 'POST') return json(await uploadDocument(repo,env,request),201);
+    if (path === '/api/documents' && request.method === 'GET') return json({jobs:await jobs<DocumentData>(repo,'document')});
+    if (path === '/api/documents/review' && request.method === 'POST') return json(await reviewPage(repo,await payload(request)));
+    if (path === '/api/documents/retry' && request.method === 'POST') {
+      const data=z.object({id:z.string(),ocr:z.boolean().default(true)}).parse(await payload(request));
+      const job=(await jobs<DocumentData>(repo,'document')).find(j=>j.id===data.id); if (!job) throw new InputError('Document was not found.');
+      const unreadable=job.data.pages.findIndex(p=>p.method==='unreadable');
+      if (unreadable>=0) { job.data.cursor=unreadable; job.data.pages=job.data.pages.slice(0,unreadable); }
+      if (job.data.cursor>=job.data.pageCount) throw new InputError('All pages were extracted. Review their text below.');
+      job.data.ocr=data.ocr; job.status='queued'; job.error=null; await saveJob(repo,job); return json({saved:true});
+    }
+    const documentFile=path.match(/^\/api\/documents\/([a-f0-9-]+)\/file$/);
+    if (documentFile && request.method==='GET') {
+      const job=(await jobs<DocumentData>(repo,'document')).find(j=>j.id===documentFile[1]);
+      const object=job && await env.BUCKET?.get(job.data.objectKey); if (!object) return json({error:'PDF not found.'},404);
+      return new Response(await object.arrayBuffer(),{headers:{'content-type':'application/pdf','content-disposition':'attachment; filename="company-lens-document.pdf"','cache-control':'private, no-store','x-content-type-options':'nosniff'}});
+    }
+    env=await modelEnvironment(repo,env);
     if (path === "/api/bootstrap" && request.method === "POST") { await repo.initialize(); return json({ ready: true }); }
     if (path === "/api/state" && request.method === "GET") {
       const companyId = url.searchParams.get("company") ?? demoCompany.id;

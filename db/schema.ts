@@ -30,3 +30,8 @@ export const runs = sqliteTable("runs", {
 }, t => [index("idx_runs_started_at").on(t.startedAt)]);
 export const settings = sqliteTable("settings", { key: text("key").primaryKey(), value: text("value").notNull() });
 export const leases = sqliteTable("leases", { key: text("key").primaryKey(), expiresAt: integer("expires_at").notNull() });
+export const jobs = sqliteTable("jobs", {
+  id: text("id").primaryKey(), kind: text("kind").notNull(), companyId: text("company_id").notNull().references(() => companies.id),
+  status: text("status").notNull(), data: text("data").notNull(), error: text("error"),
+  createdAt: text("created_at").notNull(), updatedAt: text("updated_at").notNull(),
+}, t => [index("idx_jobs_queue").on(t.kind, t.status, t.updatedAt)]);

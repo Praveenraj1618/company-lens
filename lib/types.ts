@@ -24,7 +24,7 @@ export interface Article {
   fetchedAt: string; language: string; region: Region;
   contentHash: string; clusterId: string; analysis: Analysis;
   embedding: number[] | null; embeddingModel: string | null;
-  contentScope: "feed-excerpt" | "article" | "manual" | "demo"; demo: boolean;
+  contentScope: "feed-excerpt" | "article" | "manual" | "demo" | "pdf-text" | "pdf-ocr"; demo: boolean;
 }
 export interface Run {
   id: string; companyId: string | null; sourceId: string; startedAt: string;

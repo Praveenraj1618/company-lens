@@ -63,8 +63,8 @@ test('catalog upgrade expands an existing workspace and preserves edited compani
 test('service authentication is exact and restricted to maintenance and coverage routes',async()=>{
  const {authenticated}=await import('../lib/api.ts');
  const env={SITES_SERVICE_TOKEN:'test-service-secret'};
- assert.equal(await authenticated(request('/api/sync','POST',{}, {'oai-sites-authorization':'Bearer test-service-secret'}),env),true);
- assert.equal(await authenticated(request('/api/sync','POST',{}, {'oai-sites-authorization':'Bearer wrong'}),env),false);
- assert.equal(await authenticated(request('/api/companies','POST',{}, {'oai-sites-authorization':'Bearer test-service-secret'}),env),false);
- assert.equal(await authenticated(request('/api/sync','POST',{}, {'oai-sites-authorization':'Bearer test-service-secret'}),{}),false);
+ assert.equal(await authenticated(request('/api/sync','POST',{}, {'x-company-lens-service':'test-service-secret'}),env),true);
+ assert.equal(await authenticated(request('/api/sync','POST',{}, {'x-company-lens-service':'wrong'}),env),false);
+ assert.equal(await authenticated(request('/api/companies','POST',{}, {'x-company-lens-service':'test-service-secret'}),env),false);
+ assert.equal(await authenticated(request('/api/sync','POST',{}, {'x-company-lens-service':'test-service-secret'}),{}),false);
 });

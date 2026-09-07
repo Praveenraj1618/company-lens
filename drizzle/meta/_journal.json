@@ -8,6 +8,13 @@
       "when": 1788693026015,
       "tag": "0000_brown_mentallo",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788765755780,
+      "tag": "0001_rapid_major_mapleleaf",
+      "breakpoints": true
     }
   ]
 }

@@ -60,7 +60,17 @@ export function extractPage(html: string, url: string, language = "en"): Collect
   const text = stripHtml(paragraphs || meta("description")).slice(0, 14000);
   if (text.length < 80) throw new InputError("Too little readable text. This page may require JavaScript or a subscription; paste an accessible excerpt instead.");
   if (/enable javascript|verify you are human|just a moment/i.test(title)) throw new InputError("The site requires browser verification. Automated access was stopped.");
-  return { title, url: canonicalUrl(url), text, publishedAt: parseDate(meta("article:published_time") || meta("datePublished")), language: detectLanguage(text, language), scope: "article" };
+  // Publisher structured data supplies a publication date when Open Graph does not.
+  let structuredDate = '';
+  for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      const root=JSON.parse(match[1]);
+      const nodes=Array.isArray(root)?root:[root,...(Array.isArray(root['@graph'])?root['@graph']:[])];
+      const articleNode=nodes.find(n=>n && /Article|NewsArticle|ReportageNewsArticle|BlogPosting/.test(String(n['@type'])) && typeof n.datePublished==='string');
+      if (articleNode) { structuredDate=articleNode.datePublished; break; }
+    } catch { /* Invalid publisher metadata does not become an invented date. */ }
+  }
+  return { title, url: canonicalUrl(url), text, publishedAt: parseDate(meta("article:published_time") || meta("datePublished") || meta("pubdate") || structuredDate), language: detectLanguage(text, language), scope: "article" };
 }
 export function robotsAllows(text: string, path: string): boolean {
   const groups: { agents: string[]; rules: { allow: boolean; value: string }[] }[] = [];
