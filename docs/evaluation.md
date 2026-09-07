@@ -32,6 +32,25 @@ The first GitHub collection ran successfully on 7 September 2026. It checked all
 
 Those numbers describe the first run, not a permanent source-availability guarantee or a claim that all 115 feeds always work. The dashboard records actual results for each subsequent run. Sources blocked by robots or access policy remain blocked; no bypass is attempted.
 
+## Expanded catalog release verification
+
+The [expanded collector run](https://github.com/Praveenraj1618/company-lens/actions/runs/34091030948) finished on **7 September 2026 at 06:30 UTC**. It checked **161 sources**, found **101 readable** and **60 unavailable**, and encrypted **56 company/article matches**. Independent local verification checked the published SHA-256, decrypted the actual snapshot, and imported **52 unique records** through the resumable private-sync implementation. A repeated sync inserted zero records. The transport in that local import check served the downloaded GitHub bytes; it was not a live browser or hosted-D1 end-to-end test.
+
+| Configured language | Readable sources | Unavailable sources |
+|---|---:|---:|
+| English | 88 | 46 |
+| Hindi | 1 | 5 |
+| Kannada | 2 | 1 |
+| Malayalam | 3 | 0 |
+| Tamil | 3 | 3 |
+| Telugu | 4 | 1 |
+| Bengali | 0 | 3 |
+| Gujarati | 0 | 1 |
+
+These counts measure fetch/parse success, not whether a feed contained a watched-company mention, fresh articles or accurate analysis. Increasing the bounded RSS limit from 1.5 MB to 4 MB restored the larger Asianet Hindi, Kannada and Malayalam feeds; ordinary pages retain the 1.5 MB limit. Discovery entries without an advertised feed report the need for manual article/excerpt import. Access restrictions are not bypassed.
+
+All **33 automated tests** passed (29 core and 4 compiled-release tests), TypeScript checking and the production build passed, and [GitHub CI passed](https://github.com/Praveenraj1618/company-lens/actions/runs/34091030958). New regression checks cover safe feed discovery, keeping homepage prose out of article records, robots enforcement for discovered feeds and bounded regional response sizes.
+
 ## What remains unverified
 
 Real model/embedding requests were not run because no API key was configured. Browser interaction and visual QA were not run. The Docker recipe was not built here. Live translation and contextual analysis across the added languages are not benchmarked.

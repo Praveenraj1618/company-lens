@@ -74,3 +74,7 @@ The application supports one private workspace, up to **75 companies and 250 sou
 The GitHub collector runs independently every three hours for the **161 built-in sources and 20 built-in companies**. It publishes encrypted snapshots to `coverage-data`; the owner-private Site syncs them when opened. The active sync window is seven days. Private custom records are not uploaded. Use live checks or the standalone scheduler for custom companies/sources. GitHub can delay scheduled starts.
 
 Scheduled imports use labelled baseline analysis. Contextual multilingual tone, live translations, semantic embeddings and synthesized answers require the server AI key and enrichment. A configured key is not evidence that live model calls or every supported language have been benchmarked.
+
+### Latest live verification
+
+The expanded run on 7 September 2026 checked 161 sources: 101 readable, 60 unavailable, 56 matching company/article records and 52 unique imports. All 33 automated tests passed. Readable feeds included English, Hindi, Kannada, Malayalam, Tamil and Telugu; availability is not a guarantee of matching coverage. See [the measured results and limitations](docs/evaluation.md#expanded-catalog-release-verification).
