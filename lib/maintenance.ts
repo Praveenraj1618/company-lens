@@ -28,6 +28,7 @@ export async function diagnostics(repo: Repository, env: RuntimeEnv) {
     pendingRecords:coverage.pendingRecords ?? null, pendingSnapshots:schedule.pending, failedSources:sources.filter(s=>s.enabled && s.status==='error').length,
     sources:sources.filter(s=>s.enabled && s.status==='error').map(s=>({id:s.id,name:s.name,error:s.error,...sourceIssue(s.error)})), schedule,
     maintenance:heartbeat ? JSON.parse(heartbeat) : null,
+    historicalRetryAt:await repo.getSetting('historicalRetryAt'),
     backfill:queue.map(j=>({...j,data:{...j.data,pendingCandidates:j.data.candidates.length-j.data.offset,candidates:undefined}})),
     scope:'Collected is company-matched records in the snapshot being imported. Imported is all stored article-company records. Pending records refers to that snapshot; pending snapshots can contain more. Failed sources are separate from failed historical URLs.' };
 }
@@ -68,7 +69,11 @@ export async function maintenance(repo: Repository, original: RuntimeEnv) {
         await repo.setSetting('aiFailures',JSON.stringify(failed));
       }
     }
-    result.pending=!!result.pending || (await jobs(repo)).some(j=>['queued','running'].includes(j.status));
+    const remaining=await jobs<BackfillData>(repo);
+    const historicalRetryAt=await repo.getSetting('historicalRetryAt');
+    const coolingDown=!!historicalRetryAt && Date.parse(historicalRetryAt)>Date.now();
+    result.pending=!!result.pending || remaining.some(j=>['queued','running'].includes(j.status) && (j.kind!=='backfill' || !coolingDown || j.data.offset<j.data.candidates.length));
+    if (coolingDown) result.deferredUntil=historicalRetryAt;
     if (result.document && (result.document as {status:string}).status==='daily-limit' && !(await jobs(repo,'backfill')).some(j=>['queued','running'].includes(j.status))) result.pending=false;
     // A partially imported snapshot still needs draining even between download turns.
     result.pending=!!result.pending || (await scheduleStatus(repo,env)).pending>0;

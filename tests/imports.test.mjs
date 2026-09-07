@@ -6,6 +6,7 @@ import { Repository } from '../db/index.ts';
 import { sealKey, openKey, saveAiSettings, aiStatus, modelEnvironment } from '../lib/ai-settings.ts';
 import { createBackfill, backfillStep, validateRange, eligibleHistorical, importHistoricalUrls } from '../lib/backfill.ts';
 import { jobs } from '../lib/jobs.ts';
+import { saveJob } from '../lib/jobs.ts';
 import { uploadDocument, documentStep, inspectPdf, boundedBytes } from '../lib/documents.ts';
 import { diagnostics } from '../lib/maintenance.ts';
 import { extractPage } from '../lib/sources.ts';
@@ -69,4 +70,31 @@ test('scanned PDFs wait for an API key without fabricating text or importing evi
 test('JSON-LD publication dates are extracted independently of discovery timestamps',()=>{
  const item=extractPage('<title>Infosys research</title><script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2026-08-20"}</script><article>Infosys announced a new research programme with local universities and software engineering teams. The programme includes employee workshops.</article>','https://example.com/a');
  assert.equal(item.publishedAt,'2026-08-20T00:00:00.000Z');
+});
+
+test('rate limits preserve dates, suppress index calls across companies and still process known publisher pages',async()=>{
+ const db=testDatabase(),repo=new Repository(db);await repo.initialize();
+ try{
+  const today=new Date().toISOString().slice(0,10);
+  await createBackfill(repo,{companyIds:['infosys','wipro'],from:today,to:today});
+  let calls=0;const limited=async()=>{calls++;return new Response('',{status:429,headers:{'retry-after':'1800'}})};
+  const first=await backfillStep(repo,limited);assert.equal(first.status,'deferred');assert.equal(calls,1);
+  const original=(await jobs(repo,'backfill')).find(j=>j.companyId==='infosys');assert.equal(original.data.cursor,today);assert.equal(original.data.windows,0);
+  await backfillStep(repo,limited);assert.equal(calls,1);
+  const source=(await repo.sources()).find(s=>s.id==='et-cfo');
+  await importHistoricalUrls(repo,{jobId:original.id,urls:[new URL(source.url).origin+'/known-story']});
+  await backfillStep(repo,limited,async s=>[{title:'Infosys research',text:'Infosys announced a research programme with universities, providing software engineering and data analysis workshops to employees.',url:s.url,publishedAt:new Date().toISOString(),language:'en',scope:'article'}]);
+  assert.equal((await repo.articles('infosys')).length,1);assert.equal(calls,1);
+ }finally{db.close()}
+});
+
+test('historical windows skipped by the old rate-limit path are recovered after the current range',async()=>{
+ const db=testDatabase(),repo=new Repository(db);await repo.initialize();
+ try{
+  const today=new Date().toISOString().slice(0,10);await createBackfill(repo,{companyIds:['infosys'],from:today,to:today});
+  const job=(await jobs(repo,'backfill'))[0];job.data.windows=1;job.data.cursor=new Date(Date.now()+86400000).toISOString().slice(0,10);job.data.gaps=[today+'–'+today+': Historical index returned HTTP 429'];await saveJob(repo,job);
+  let queried;await backfillStep(repo,async u=>{queried=String(u);return Response.json({articles:[]})});
+  assert.ok(queried.includes('startdatetime='+today.replaceAll('-','')));
+  const saved=(await jobs(repo,'backfill'))[0];assert.equal(saved.data.windows,1);assert.deepEqual(saved.data.retryWindows,[]);assert.ok(!saved.data.gaps.some(g=>g.includes('HTTP 429')));
+ }finally{db.close()}
 });
