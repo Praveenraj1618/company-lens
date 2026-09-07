@@ -45,7 +45,7 @@ The same TypeScript domain code is shared across the web application, scheduled 
 | Retrieval combination | Cosine similarity + reciprocal rank fusion | Combines semantic matches with exact keyword matches without comparing incompatible raw scores. |
 | Verification | Node test runner, TypeScript checking, GitHub CI | Exercises persistence, access rules, source parsing, encrypted sync, scheduling, fallbacks and built runtime behavior. |
 
-There is no LangChain dependency, separate vector database, local GPU model, OCR/CV model, learned entity linker or neural reranker in this implementation. Those are possible future additions, not features to claim on a CV today.
+The document extension adds PDF.js text extraction and opt-in vision-model OCR, with private R2 originals and human review before OCR text enters intelligence. See [the cloud and document pipeline](cloud-pipeline.md) for its full architecture. There is no LangChain dependency, separate vector database, locally trained GPU model, learned entity linker or neural reranker.
 
 ## 3. Discovery and source collection
 
@@ -112,7 +112,7 @@ RAG means retrieval-augmented generation: find relevant stored evidence first, t
 
 ```mermaid
 flowchart TD
-  Q["Question and selected company"] --> Corpus["Latest 300 stored company articles"]
+  Q["Question and selected company"] --> Corpus["Latest 1500 stored company articles"]
   Corpus --> BM25["BM25 keyword ranking"]
   Corpus --> Dense["Compatible embedding vectors"]
   Q --> QueryVector["Optional query embedding"]
@@ -136,7 +136,7 @@ flowchart TD
 
 **Abstention:** no retrieved evidence produces an insufficient-evidence response. If the model is unavailable, users receive labelled source excerpts. Neither retrieval scores nor citation existence alone prove factual correctness; answer entailment still needs human evaluation.
 
-The retrieval unit is currently one bounded article/excerpt. There is no separate overlapping-chunk index. Vectors are stored as JSON in the relational database and scored in memory across at most 300 articles for the selected company. That is inspectable and adequate for this bounded application. Larger archives would justify a dedicated vector index, incremental BM25 index, passage chunking and benchmarked reranking.
+The retrieval unit is currently one bounded article/excerpt, or one imported PDF page. There is no separate overlapping-chunk index. Vectors are stored as JSON in the relational database and scored in memory across at most 1,500 articles for the selected company. Stored text is capped at 14,000 characters per record; model analysis receives the first 9,000, embedding input the first 6,000, and answer generation the first 4,000 per selected record. Later passages can therefore be omitted from model context. Larger archives and long documents would benefit from passage chunking, a dedicated vector index, incremental BM25 and benchmarked reranking.
 
 ## 8. Scheduling, encryption and private synchronization
 
@@ -148,7 +148,7 @@ The collector writes ciphertext to a separate `coverage-data` branch, leaving so
 
 When the authenticated dashboard opens, it downloads and verifies a snapshot, decrypts it server-side, validates its schema and imports at most 40 items per request. A persistent cursor and company/URL uniqueness let interrupted syncs resume. A database lease prevents overlapping sync work. Source switches and current company aliases are respected before insertion. Private custom companies, pasted newsletters, questions, keys and source definitions are never uploaded to the scheduled repository by this flow.
 
-Collection therefore continues with the browser closed. **The private database catches up when the app is opened**, rather than receiving unsolicited inbound requests through the private sign-in gateway. Users returning after the seven-day sync window can miss expired runs; feed collection is not an unlimited archive. Custom companies and custom sources use manual/browser collection on Sites or unattended collection on the standalone server. Edit the public catalog and push it to change what the GitHub runner monitors.
+Collection continues with the browser closed. A configured ChatGPT automation calls the scoped private maintenance API every three hours to import snapshots into D1, process historical/document jobs and perform opted-in model enrichment. Browser sync remains a manual fallback. The dashboard shows the actual maintenance heartbeat. Seven days of encrypted snapshots are retained; an outage beyond that window can miss expired runs. Custom publisher sources are checked by maintenance; arbitrary custom companies require live collection or the standalone collector. Edit the public catalog to change what the GitHub runner monitors.
 
 ## 9. Database and access design
 
@@ -161,9 +161,9 @@ Collection therefore continues with the browser closed. **The private database c
 | `settings` | Catalog version, sync cursor, preferences and schedule status | Resumes upgrades and synchronization safely. |
 | `leases` | Expiring source/cycle/sync locks | Prevents duplicate concurrent work and recovers from interrupted jobs. |
 
-The API is a custom Worker router. Private Sites identity is accepted only when the deployment explicitly trusts its authentication gateway. Standalone mode disables forwarded-identity trust and requires a dashboard password outside loopback. Writes require same-origin JSON. Inputs and fetch destinations are validated; keys never appear in client API responses.
+The API is a custom Worker router. Private Sites identity is accepted only when the deployment explicitly trusts its authentication gateway. Scoped maintenance routes also accept an exact server-configured service secret after the private Sites gateway. Standalone mode disables forwarded-identity trust and requires a dashboard password outside loopback. Browser writes are checked for same-origin; most use validated JSON, and PDF uploads use bounded multipart bodies. Keys never appear in client API responses.
 
-Current workspace limits are 75 companies and 250 configured sources. Dashboard, RAG and export read the latest 300 stored articles per company; older records can remain in storage. Recent activity shows 150 runs. Production D1 data and local SQLite data are separate stores, not automatic mirrors.
+Current workspace limits are 75 companies and 250 configured sources. Dashboard, RAG and export read the latest 1,500 stored articles per company; coverage diagnostics count every stored record. Recent activity shows 150 runs. Production D1 data and local SQLite data are separate stores, not automatic mirrors. PDFs are limited to 4 MB and 20 pages per upload.
 
 ## 10. Verification and portfolio claims
 
@@ -171,7 +171,7 @@ Tests cover alias boundaries, dates, RSS/Atom handling, unsafe input/redirect re
 
 The retrieval fixture has 18 hand-authored questions over eight fictional articles in seven story groups. It measures Recall@5, MRR and abstention on that fixture. Its Tamil translation is prewritten. It does not establish real-world retrieval accuracy, multilingual quality, source reliability or LLM factuality. See [evaluation](evaluation.md).
 
-An accurate portfolio description is: **“Built a multilingual company-news intelligence system with scheduled collection, privacy-preserving synchronization, provenance validation, hybrid retrieval and a private monitoring dashboard.”** Do not claim that this code trains an ML model, performs CV/OCR, offers verified reputation scores, or has benchmarked every supported language.
+An accurate portfolio description is: **“Built a multilingual company-news intelligence system with scheduled cloud ingestion, resumable historical imports, PDF extraction, reviewable vision OCR, provenance validation and hybrid retrieval.”** The system integrates pretrained models; it does not train an ML model, offer verified reputation scores or have measured accuracy for every supported language. Paid OCR and model integration still require validation with a working user key.
 
 ## Technology source discovery
 

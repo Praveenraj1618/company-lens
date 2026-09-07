@@ -2,6 +2,8 @@
 
 Company Lens stores articles, companies, source health, collection runs, resumable jobs and settings in the private Site's Cloudflare D1 database. Uploaded original PDFs are stored in private Cloudflare R2; page text and processing metadata live in D1. Opening the dashboard is not required by the maintenance endpoint. An external scheduler must call it; exporting a Worker `scheduled` function alone does not register a schedule on Sites.
 
+The frontend uses React and TypeScript, Next-compatible routing through vinext, and shadcn/Radix controls. A Cloudflare Worker hosts the application and API. Drizzle defines the SQL schema and append-only migrations; prepared SQL statements implement runtime reads and writes. These choices keep UI, API, persistent jobs and data validation in one inspectable codebase. The configured ChatGPT automation runs maintenance every three hours; actual successful runs have been observed with the browser closed.
+
 ```mermaid
 flowchart TD
   GH[GitHub Actions collector] --> ENC[Encrypted snapshots]

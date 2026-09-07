@@ -69,7 +69,9 @@ The evaluation uses 18 hand-authored questions over fictional stories. It is a s
 
 Coverage is limited to monitored, accessible sources. Robots/access restrictions are respected. Reports are not treated as verified facts, source count is not independent corroboration, and tone is not a corporate reputation or investment score. Alias disambiguation and story grouping are conservative heuristics that can miss or misclassify cases.
 
-The application supports one private workspace, up to **75 companies and 250 sources**, with the latest 300 stored articles per company in retrieval/display/export.
+The application supports one private workspace, up to **75 companies and 250 sources**, with the latest 1,500 stored articles per company in retrieval/display/export. Cloud diagnostics count all stored articles.
+
+Cloud D1 stores durable historical jobs and private AI configuration; R2 stores uploaded PDFs. **Data & imports** exposes collection/import/pending/error counts, date-selectable historical backfill, original PDF downloads and OCR review. **Settings & methodology → Private AI connection** accepts an encrypted server-side OpenAI key. An external maintenance schedule imports data and processes jobs without opening the Site. See [cloud pipeline and setup](docs/cloud-pipeline.md) for the architecture, usage limits, data boundaries and rate-limit recovery.
 
 The GitHub collector runs independently every three hours for the **161 built-in sources and 20 built-in companies**. It publishes encrypted snapshots to `coverage-data`; the owner-private Site syncs them when opened. The active sync window is seven days. Private custom records are not uploaded. Use live checks or the standalone scheduler for custom companies/sources. GitHub can delay scheduled starts.
 
