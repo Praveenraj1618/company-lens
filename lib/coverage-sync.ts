@@ -79,7 +79,7 @@ export async function syncCoverage(repo: Repository, env: RuntimeEnv, fetcher: t
         statements.push(repo.db.prepare('UPDATE sources SET last_fetched_at=?,status=?,error=? WHERE id=? AND (last_fetched_at IS NULL OR last_fetched_at<=?)').bind(snapshot.finishedAt, result.status, result.error, result.id, snapshot.finishedAt));
         const counts = cursor.stats[result.id] ?? { inserted: 0, duplicates: 0 };
         const run: Run = { id: `scheduled:${snapshot.id}:${result.id}`, companyId: null, sourceId: result.id, startedAt: snapshot.startedAt, finishedAt: snapshot.finishedAt, status: result.status === 'error' ? 'error' : snapshot.truncated ? 'partial' : 'success', scanned: result.scanned, matched: result.matched, inserted: counts.inserted, duplicates: counts.duplicates, error: result.error ?? (snapshot.truncated ? 'Snapshot size limit reached; some matching items were omitted.' : null) };
-        await repo.saveRun(run);
+        statements.push(repo.runStatement(run));
       }
       for (let i = 0; i < statements.length; i += 40) await repo.db.batch(statements.slice(i, i + 40));
       await repo.setSetting('coverageCompleted', snapshot.id);

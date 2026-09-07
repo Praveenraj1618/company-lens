@@ -51,10 +51,11 @@ export class Repository {
   async updateAnalysis(a: Article): Promise<void> {
     await this.db.prepare("UPDATE articles SET analysis=?,embedding=?,embedding_model=? WHERE id=?").bind(JSON.stringify(a.analysis),a.embedding ? JSON.stringify(a.embedding) : null,a.embeddingModel,a.id).run();
   }
-  async saveRun(r: Run): Promise<void> {
-    await this.db.prepare("INSERT INTO runs (id,company_id,source_id,started_at,finished_at,status,scanned,matched,inserted,duplicates,error) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET finished_at=excluded.finished_at,status=excluded.status,scanned=excluded.scanned,matched=excluded.matched,inserted=excluded.inserted,duplicates=excluded.duplicates,error=excluded.error")
-      .bind(r.id,r.companyId,r.sourceId,r.startedAt,r.finishedAt,r.status,r.scanned,r.matched,r.inserted,r.duplicates,r.error).run();
+  runStatement(r: Run) {
+    return this.db.prepare("INSERT INTO runs (id,company_id,source_id,started_at,finished_at,status,scanned,matched,inserted,duplicates,error) VALUES (?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET finished_at=excluded.finished_at,status=excluded.status,scanned=excluded.scanned,matched=excluded.matched,inserted=excluded.inserted,duplicates=excluded.duplicates,error=excluded.error")
+      .bind(r.id,r.companyId,r.sourceId,r.startedAt,r.finishedAt,r.status,r.scanned,r.matched,r.inserted,r.duplicates,r.error);
   }
+  async saveRun(r: Run): Promise<void> { await this.runStatement(r).run(); }
   async getSetting(key: string): Promise<string | null> { return (await this.db.prepare("SELECT value FROM settings WHERE key=?").bind(key).first<{ value: string }>())?.value ?? null; }
   async setSetting(key: string, value: string): Promise<void> { await this.db.prepare("INSERT INTO settings (key,value) VALUES (?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value").bind(key,value).run(); }
   async acquire(key: string, ttlSeconds: number): Promise<boolean> {
