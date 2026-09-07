@@ -55,7 +55,7 @@ The Docker image is provided as a deployment recipe. The Node runtime is covered
 
 The deployed project uses the `Scheduled company coverage` GitHub Actions workflow. Its UTC cron is `17 */3 * * *`. It also runs on relevant catalog/collector pushes and supports manual **Run workflow** in GitHub.
 
-The runner checks the 115 public catalog feeds against the 20 public built-in companies. It encrypts results using `config/collector-public-key.json`, then publishes ciphertext and a timestamp/hash manifest to the separate `coverage-data` branch. The workflow's repository-scoped `GITHUB_TOKEN` has `contents: write` for this publication. It never receives the private Site key or user database.
+The runner checks the 161 public catalog sources against the 20 public built-in companies. It encrypts results using `config/collector-public-key.json`, then publishes ciphertext and a timestamp/hash manifest to the separate `coverage-data` branch. The workflow's repository-scoped `GITHUB_TOKEN` has `contents: write` for this publication. It never receives the private Site key or user database.
 
 The private Site has server environment values `COVERAGE_REPOSITORY=Praveenraj1618/company-lens` and a secret `COVERAGE_PRIVATE_KEY` containing the RSA private JWK. It decrypts and imports results only after an authenticated visit. **Sync results** resumes pending work. Source switches control which records enter the workspace. Pausing automatic sync does not stop the GitHub job; disable the workflow in GitHub to pause unattended collection.
 

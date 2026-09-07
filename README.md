@@ -7,7 +7,7 @@ Track a company, collect relevant coverage, group repeated reporting, inspect st
 ## What works
 
 - 20 company watchlist entries, including Vee Technologies, with official domains and explicit regional aliases.
-- 100 Indian and 15 global RSS/Atom feeds, public page collection, and pasted article/newsletter excerpts.
+- 139 Indian and 22 global sources: 141 configured RSS/Atom endpoints, 20 publisher feed-discovery entries, plus single-article and pasted newsletter imports.
 - Original text, source URLs, publication dates, collection dates and content scope preserved separately.
 - Idempotent collection, conservative related-story grouping, source health and run history.
 - Event categorization and positive/negative/mixed/unclear development tone.
@@ -49,6 +49,7 @@ Open `http://127.0.0.1:3000`. Data is stored in `.data/company-lens.sqlite`. The
 | 5 — Regional expansion | 100 Indian feeds, 15 global feeds, 20 companies and additional Indian languages |
 | 6 — Automation and UX | Three-hour encrypted collection, private sync, searchable regional source directory and controls |
 | 7 — Verification and guide | Scheduling tests, efficient BM25 and detailed AI architecture / operations |
+| 8 — Technology sources | All requested tech outlets, feed discovery, larger regional RSS support and clear collection methods |
 
 The Git history records each stage separately. The project is implemented in TypeScript with React/Vinext, Cloudflare Workers, SQLite/D1, Zod and fast-xml-parser. It integrates pretrained models through an API; it does not train a new ML model.
 
@@ -70,6 +71,6 @@ Coverage is limited to monitored, accessible sources. Robots/access restrictions
 
 The application supports one private workspace, up to **75 companies and 250 sources**, with the latest 300 stored articles per company in retrieval/display/export.
 
-The GitHub collector runs independently every three hours for the **115 built-in feeds and 20 built-in companies**. It publishes encrypted snapshots to `coverage-data`; the owner-private Site syncs them when opened. The active sync window is seven days. Private custom records are not uploaded. Use live checks or the standalone scheduler for custom companies/sources. GitHub can delay scheduled starts.
+The GitHub collector runs independently every three hours for the **161 built-in sources and 20 built-in companies**. It publishes encrypted snapshots to `coverage-data`; the owner-private Site syncs them when opened. The active sync window is seven days. Private custom records are not uploaded. Use live checks or the standalone scheduler for custom companies/sources. GitHub can delay scheduled starts.
 
 Scheduled imports use labelled baseline analysis. Contextual multilingual tone, live translations, semantic embeddings and synthesized answers require the server AI key and enrichment. A configured key is not evidence that live model calls or every supported language have been benchmarked.

@@ -12,7 +12,7 @@ import type { RuntimeEnv } from "./runtime.ts";
 import type { AppState, Article, Company, Source } from "./types.ts";
 
 const companyInput = z.object({ id: z.string().max(80).optional(), name: z.string().trim().min(2).max(100), domain: z.string().trim().min(3).max(250), industry: z.string().trim().max(100).default("Other"), aliases: z.array(z.string().trim().min(2).max(100)).max(20).default([]), description: z.string().trim().max(500).default("") });
-const sourceInput = z.object({ name: z.string().trim().min(2).max(100), url: z.string().url().max(2000), kind: z.enum(["rss", "web"]), region: z.enum(REGIONS), language: z.string().refine(v => Object.hasOwn(LANGUAGES, v), "Choose a supported language").default("en") });
+const sourceInput = z.object({ name: z.string().trim().min(2).max(100), url: z.string().url().max(2000), kind: z.enum(["rss", "web", "discovery"]), region: z.enum(REGIONS), language: z.string().refine(v => Object.hasOwn(LANGUAGES, v), "Choose a supported language").default("en") });
 export async function secretEqual(a: string, b: string): Promise<boolean> {
   const [x, y] = await Promise.all([a, b].map(s => crypto.subtle.digest("SHA-256", new TextEncoder().encode(s))));
   let result = 0; const first = new Uint8Array(x), second = new Uint8Array(y);

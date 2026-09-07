@@ -1,7 +1,7 @@
 import sourceCatalog from './source-catalog.json' with { type: 'json' };
 import type { Company, Region, Source } from './types.ts';
 
-export const CATALOG_VERSION = '2026-09-regional-v3';
+export const CATALOG_VERSION = '2026-09-tech-v4';
 export const COLLECTION_INTERVAL_MS = 3 * 60 * 60 * 1000;
 export const LANGUAGES = { en: 'English', ta: 'Tamil', hi: 'Hindi', kn: 'Kannada', te: 'Telugu', ml: 'Malayalam', bn: 'Bengali', gu: 'Gujarati', mr: 'Marathi', pa: 'Punjabi', or: 'Odia', as: 'Assamese', ur: 'Urdu' } as const;
 export const REGIONS = ['India', 'Tamil Nadu', 'Karnataka', 'Kerala', 'Andhra Pradesh', 'Telangana', 'Puducherry', 'Delhi', 'Haryana', 'Punjab', 'Chandigarh', 'Himachal Pradesh', 'Jammu and Kashmir', 'Ladakh', 'Uttar Pradesh', 'Uttarakhand', 'Rajasthan', 'Gujarat', 'Maharashtra', 'Goa', 'Madhya Pradesh', 'Chhattisgarh', 'Bihar', 'Jharkhand', 'Odisha', 'West Bengal', 'Assam', 'Arunachal Pradesh', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Sikkim', 'Tripura', 'North East', 'Andaman and Nicobar Islands', 'Lakshadweep', 'Dadra and Nagar Haveli and Daman and Diu', 'Global'] as const;
@@ -19,7 +19,7 @@ export function sourceZone(region: string): Zone {
   return (Object.entries(zoneRegions).find(([, regions]) => regions.includes(region))?.[0] as Zone) || 'National';
 }
 export const catalogEntries = sourceCatalog;
-export const initialSources: Source[] = sourceCatalog.map(s => ({ id: s.id, name: s.name, url: s.url, region: s.region as Region, language: s.language, kind: 'rss', enabled: true, status: 'unfetched', lastFetchedAt: null, error: null }));
+export const initialSources: Source[] = sourceCatalog.map(s => ({ id: s.id, name: s.name, url: s.url, region: s.region as Region, language: s.language, kind: (s.kind || 'rss') as Source['kind'], enabled: true, status: 'unfetched', lastFetchedAt: null, error: null }));
 export function sourcePublisher(source: Pick<Source, 'id' | 'url'>): string {
   return sourceCatalog.find(s => s.id === source.id)?.publisher || new URL(source.url).hostname.replace(/^www\./, '');
 }

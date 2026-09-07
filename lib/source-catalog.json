@@ -1033,5 +1033,465 @@
     "language": "en",
     "publisher": "NPR",
     "reference": "https://feeds.npr.org/1006/rss.xml"
+  },
+  {
+    "id": "wired",
+    "name": "Wired",
+    "url": "https://www.wired.com/feed/rss",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Wired",
+    "reference": "https://www.wired.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "cnet",
+    "name": "CNET",
+    "url": "https://www.cnet.com/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "CNET",
+    "reference": "https://www.cnet.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "engadget",
+    "name": "Engadget",
+    "url": "https://www.engadget.com/rss.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Engadget",
+    "reference": "https://www.engadget.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "zdnet",
+    "name": "ZDNET",
+    "url": "https://www.zdnet.com/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "ZDNET",
+    "reference": "https://www.zdnet.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "techradar",
+    "name": "TechRadar",
+    "url": "https://www.techradar.com/feeds.xml",
+    "region": "Global",
+    "language": "en",
+    "publisher": "TechRadar",
+    "reference": "https://www.techradar.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "gizmodo",
+    "name": "Gizmodo",
+    "url": "https://gizmodo.com/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Gizmodo",
+    "reference": "https://gizmodo.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "mashable",
+    "name": "Mashable",
+    "url": "https://mashable.com/",
+    "region": "Global",
+    "language": "en",
+    "publisher": "Mashable",
+    "reference": "https://mashable.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "gadgets360",
+    "name": "Gadgets 360",
+    "url": "https://www.gadgets360.com/rss/news",
+    "region": "India",
+    "language": "en",
+    "publisher": "Gadgets 360",
+    "reference": "https://www.gadgets360.com/rss",
+    "kind": "rss"
+  },
+  {
+    "id": "beebom",
+    "name": "Beebom",
+    "url": "https://beebom.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Beebom",
+    "reference": "https://beebom.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "91mobiles",
+    "name": "91mobiles",
+    "url": "https://www.91mobiles.com/hub/",
+    "region": "India",
+    "language": "en",
+    "publisher": "91mobiles",
+    "reference": "https://www.91mobiles.com/hub/",
+    "kind": "discovery"
+  },
+  {
+    "id": "mysmartprice",
+    "name": "MySmartPrice",
+    "url": "https://www.mysmartprice.com/gear/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "MySmartPrice",
+    "reference": "https://www.mysmartprice.com/gear/",
+    "kind": "rss"
+  },
+  {
+    "id": "smartprix",
+    "name": "Smartprix",
+    "url": "https://www.smartprix.com/bytes/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Smartprix",
+    "reference": "https://www.smartprix.com/bytes/",
+    "kind": "discovery"
+  },
+  {
+    "id": "gadgets-now",
+    "name": "Gadgets Now",
+    "url": "https://gadgetsnow.indiatimes.com/rssfeeds/2147477994.cms",
+    "region": "India",
+    "language": "en",
+    "publisher": "Gadgets Now",
+    "reference": "https://www.gadgetsnow.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "gizbot",
+    "name": "Gizbot",
+    "url": "https://www.gizbot.com/rss/feeds/gizbot-fb.xml",
+    "region": "India",
+    "language": "en",
+    "publisher": "Gizbot",
+    "reference": "https://www.gizbot.com/rss/",
+    "kind": "rss"
+  },
+  {
+    "id": "fonearena",
+    "name": "FoneArena",
+    "url": "https://www.fonearena.com/blog/feed",
+    "region": "India",
+    "language": "en",
+    "publisher": "FoneArena",
+    "reference": "https://www.fonearena.com/blog/",
+    "kind": "rss"
+  },
+  {
+    "id": "et-cio",
+    "name": "ET CIO",
+    "url": "https://cio.economictimes.indiatimes.com/rss/topstories",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET CIO",
+    "reference": "https://cio.economictimes.indiatimes.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "techcircle",
+    "name": "TechCircle",
+    "url": "https://www.techcircle.in/",
+    "region": "India",
+    "language": "en",
+    "publisher": "TechCircle",
+    "reference": "https://www.techcircle.in/",
+    "kind": "discovery"
+  },
+  {
+    "id": "express-computer",
+    "name": "Express Computer",
+    "url": "https://www.expresscomputer.in/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Express Computer",
+    "reference": "https://www.expresscomputer.in/",
+    "kind": "rss"
+  },
+  {
+    "id": "enterprise-it-world",
+    "name": "Enterprise IT World",
+    "url": "https://www.enterpriseitworld.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Enterprise IT World",
+    "reference": "https://www.enterpriseitworld.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "techday-india",
+    "name": "TechDay India",
+    "url": "https://techday.in/feed",
+    "region": "India",
+    "language": "en",
+    "publisher": "TechDay India",
+    "reference": "https://techday.in/",
+    "kind": "rss"
+  },
+  {
+    "id": "itvarnews",
+    "name": "ITVarnews / TechPlus Media",
+    "url": "https://itvarnews.techplusmedia.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "ITVarnews / TechPlus Media",
+    "reference": "https://itvarnews.techplusmedia.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "tech-observer",
+    "name": "Tech Observer",
+    "url": "https://techobserver.in/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Tech Observer",
+    "reference": "https://techobserver.in/",
+    "kind": "rss"
+  },
+  {
+    "id": "economic-times-tech",
+    "name": "ET Tech",
+    "url": "https://economictimes.indiatimes.com/tech/rssfeeds/13357270.cms",
+    "region": "India",
+    "language": "en",
+    "publisher": "ET Tech",
+    "reference": "https://economictimes.indiatimes.com/tech",
+    "kind": "rss"
+  },
+  {
+    "id": "livemint-tech",
+    "name": "LiveMint Tech",
+    "url": "https://www.livemint.com/rss/technology",
+    "region": "India",
+    "language": "en",
+    "publisher": "LiveMint Tech",
+    "reference": "https://www.livemint.com/technology",
+    "kind": "rss"
+  },
+  {
+    "id": "trak",
+    "name": "Trak.in",
+    "url": "https://trak.in/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Trak.in",
+    "reference": "https://trak.in/",
+    "kind": "rss"
+  },
+  {
+    "id": "siliconindia",
+    "name": "SiliconIndia",
+    "url": "https://www.siliconindia.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "SiliconIndia",
+    "reference": "https://www.siliconindia.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "telecomtalk",
+    "name": "TelecomTalk",
+    "url": "https://telecomtalk.info/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "TelecomTalk",
+    "reference": "https://telecomtalk.info/",
+    "kind": "rss"
+  },
+  {
+    "id": "hacker-news",
+    "name": "The Hacker News",
+    "url": "https://feeds.feedburner.com/TheHackersNews",
+    "region": "India",
+    "language": "en",
+    "publisher": "The Hacker News",
+    "reference": "https://thehackernews.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "labnol",
+    "name": "Labnol / Digital Inspiration",
+    "url": "https://www.labnol.org/rss.xml",
+    "region": "India",
+    "language": "en",
+    "publisher": "Labnol / Digital Inspiration",
+    "reference": "https://www.labnol.org/",
+    "kind": "rss"
+  },
+  {
+    "id": "techwiser",
+    "name": "Techwiser",
+    "url": "https://techwiser.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Techwiser",
+    "reference": "https://techwiser.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "windows-latest",
+    "name": "Windows Latest",
+    "url": "https://www.windowslatest.com/feed/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Windows Latest",
+    "reference": "https://www.windowslatest.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "vccircle",
+    "name": "VCCircle",
+    "url": "https://www.vccircle.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "VCCircle",
+    "reference": "https://www.vccircle.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "new-indian-express-tech",
+    "name": "The New Indian Express · Technology",
+    "url": "https://www.newindianexpress.com/lifestyle/tech",
+    "region": "India",
+    "language": "en",
+    "publisher": "The New Indian Express",
+    "reference": "https://www.newindianexpress.com/lifestyle/tech",
+    "kind": "discovery"
+  },
+  {
+    "id": "yourstory",
+    "name": "YourStory",
+    "url": "https://yourstory.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "YourStory",
+    "reference": "https://yourstory.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "analytics-india",
+    "name": "Analytics India Magazine",
+    "url": "https://analyticsindiamag.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Analytics India Magazine",
+    "reference": "https://analyticsindiamag.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "gadgets360-hi",
+    "name": "Gadgets 360 Hindi",
+    "url": "https://hindi.gadgets360.com/rss/news",
+    "region": "India",
+    "language": "hi",
+    "publisher": "Gadgets 360",
+    "reference": "https://hindi.gadgets360.com/",
+    "kind": "rss"
+  },
+  {
+    "id": "maalaimalar-tech",
+    "name": "Maalai Malar · Technology",
+    "url": "https://www.maalaimalar.com/technology",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Maalai Malar",
+    "reference": "https://www.maalaimalar.com/technology",
+    "kind": "discovery"
+  },
+  {
+    "id": "eisamay-tech",
+    "name": "Ei Samay · Technology",
+    "url": "https://eisamay.com/tech",
+    "region": "West Bengal",
+    "language": "bn",
+    "publisher": "Ei Samay",
+    "reference": "https://eisamay.com/tech",
+    "kind": "discovery"
+  },
+  {
+    "id": "dailyhunt",
+    "name": "Dailyhunt",
+    "url": "https://dailyhunt.in/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Dailyhunt",
+    "reference": "https://dailyhunt.in/",
+    "kind": "discovery"
+  },
+  {
+    "id": "way2news",
+    "name": "Way2News",
+    "url": "https://way2news.co/",
+    "region": "India",
+    "language": "te",
+    "publisher": "Way2News",
+    "reference": "https://way2news.co/",
+    "kind": "discovery"
+  },
+  {
+    "id": "lokal",
+    "name": "Lokal",
+    "url": "https://getlokalapp.com/",
+    "region": "India",
+    "language": "en",
+    "publisher": "Lokal",
+    "reference": "https://getlokalapp.com/",
+    "kind": "discovery"
+  },
+  {
+    "id": "gizbot-ta",
+    "name": "Gizbot Tamil",
+    "url": "https://tamil.gizbot.com/rss/feeds/gizbot-tamil-fb.xml",
+    "region": "Tamil Nadu",
+    "language": "ta",
+    "publisher": "Gizbot",
+    "reference": "https://tamil.gizbot.com/rss/",
+    "kind": "rss"
+  },
+  {
+    "id": "gizbot-te",
+    "name": "Gizbot Telugu",
+    "url": "https://telugu.gizbot.com/rss/feeds/gizbot-telugu-fb.xml",
+    "region": "Andhra Pradesh",
+    "language": "te",
+    "publisher": "Gizbot",
+    "reference": "https://telugu.gizbot.com/rss/",
+    "kind": "rss"
+  },
+  {
+    "id": "gizbot-kn",
+    "name": "Gizbot Kannada",
+    "url": "https://kannada.gizbot.com/rss/",
+    "region": "Karnataka",
+    "language": "kn",
+    "publisher": "Gizbot",
+    "reference": "https://kannada.gizbot.com/rss/",
+    "kind": "discovery"
+  },
+  {
+    "id": "gizbot-ml",
+    "name": "Gizbot Malayalam",
+    "url": "https://malayalam.gizbot.com/rss/feeds/gizbot-malayalam-fb.xml",
+    "region": "Kerala",
+    "language": "ml",
+    "publisher": "Gizbot",
+    "reference": "https://malayalam.gizbot.com/rss/",
+    "kind": "rss"
+  },
+  {
+    "id": "gizbot-bn",
+    "name": "Gizbot Bengali",
+    "url": "https://bengali.gizbot.com/rss/",
+    "region": "West Bengal",
+    "language": "bn",
+    "publisher": "Gizbot",
+    "reference": "https://bengali.gizbot.com/rss/",
+    "kind": "discovery"
   }
 ]

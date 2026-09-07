@@ -1,6 +1,6 @@
 # Company Lens: complete architecture and AI pipeline
 
-Company Lens is a private company-news intelligence application. It collects articles mentioning selected companies, keeps their provenance, groups related reports, produces cautious event analysis and answers questions from collected evidence. It currently seeds **100 Indian feeds, 15 global feeds and 20 companies**, including Vee Technologies. English, Tamil, Hindi, Kannada, Telugu, Malayalam, Bengali and Gujarati occur in the source catalog.
+Company Lens is a private company-news intelligence application. It collects articles mentioning selected companies, keeps their provenance, groups related reports, produces cautious event analysis and answers questions from collected evidence. It currently seeds **139 Indian sources, 22 global sources and 20 companies**, including Vee Technologies. English, Tamil, Hindi, Kannada, Telugu, Malayalam, Bengali and Gujarati occur in the source catalog.
 
 There are two distinct analysis modes. **The deployed application works without an AI key**, using keyword analysis and evidence search. The implemented model path provides contextual analysis, translation, embeddings and generated answers when a server-side key is configured. Adding sources or supporting a script does not itself enable reliable multilingual sentiment or cross-language search.
 
@@ -53,7 +53,7 @@ There is no LangChain dependency, separate vector database, local GPU model, OCR
 
 `lib/source-catalog.json` records each feed's URL, region, language, publisher and reference. Multiple feeds from one publication are counted as feeds, not independent publishers. State/area labels describe source coverage; they do not geolocate every event in an article. See [catalog definitions and provenance](source-catalog.md).
 
-The GitHub collector checks all 115 built-in feeds against the 20 built-in companies. It uses at most four concurrent collection tasks and serializes requests to the same hostname. A source failure is recorded while other sources continue. Transient transport and selected server errors receive one retry; access denials are not retried.
+The GitHub collector checks all 161 built-in sources against the 20 built-in companies. It uses at most four concurrent collection tasks and serializes requests to the same hostname. A source failure is recorded while other sources continue. Transient transport and selected server errors receive one retry; access denials are not retried.
 
 The standalone collector processes every enabled source due after three hours, with at most three concurrent tasks and the same-host serialization. An always-running process is required. Manual checks also work through the private app. Public article pages and user-pasted newsletter excerpts enter through a separate import endpoint.
 
@@ -172,3 +172,9 @@ Tests cover alias boundaries, dates, RSS/Atom handling, unsafe input/redirect re
 The retrieval fixture has 18 hand-authored questions over eight fictional articles in seven story groups. It measures Recall@5, MRR and abstention on that fixture. Its Tamil translation is prewritten. It does not establish real-world retrieval accuracy, multilingual quality, source reliability or LLM factuality. See [evaluation](evaluation.md).
 
 An accurate portfolio description is: **“Built a multilingual company-news intelligence system with scheduled collection, privacy-preserving synchronization, provenance validation, hybrid retrieval and a private monitoring dashboard.”** Do not claim that this code trains an ML model, performs CV/OCR, offers verified reputation scores, or has benchmarked every supported language.
+
+## Technology source discovery
+
+The expanded catalog has 141 RSS/Atom endpoints and 20 discovery entries. For a discovery entry, `lib/sources.ts` reads only the public publisher page to find advertised feed links (`link` RSS/Atom MIME types or RSS/XML anchors). It excludes comments and script content, validates each destination as public HTTPS, checks its robots policy, and tries at most three candidates. No advertised or readable feed produces a visible source error and a manual-import path. There is no private API integration with Dailyhunt, Way2News or Lokal.
+
+Regional feeds are larger because UTF-8 Indian scripts require multiple bytes per character and some publishers embed long descriptions. Feed retrieval is bounded at 4 MB; pages remain at 1.5 MB, and parsing still keeps only 150 entries. Oversized data is rejected, not silently treated as a successful partial feed. Checks preserve the distinction between a readable feed, matching company coverage and reliable analysis.

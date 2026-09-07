@@ -6,7 +6,7 @@ export interface Company {
   aliases: string[]; description: string; demo: boolean; createdAt: string;
 }
 export interface Source {
-  id: string; name: string; url: string; kind: "rss" | "web";
+  id: string; name: string; url: string; kind: "rss" | "web" | "discovery";
   region: Region; language: string; enabled: boolean;
   status: "unfetched" | "healthy" | "error";
   lastFetchedAt: string | null; error: string | null;

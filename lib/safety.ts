@@ -45,7 +45,8 @@ export async function checkDns(host: string, fetcher: typeof fetch = fetch): Pro
   if (!addresses.length || addresses.some(ip => !publicAddress(ip))) throw new InputError("The source does not resolve exclusively to public addresses.");
 }
 export async function readLimited(response: Response, maxBytes = 1_500_000): Promise<string> {
-  if (Number(response.headers.get("content-length")) > maxBytes) throw new InputError("Source exceeds the 1.5 MB retrieval limit.");
+  const limitMessage = `Source exceeds the ${maxBytes / 1_000_000} MB retrieval limit.`;
+  if (Number(response.headers.get("content-length")) > maxBytes) { await response.body?.cancel(); throw new InputError(limitMessage); }
   if (!response.body) return "";
   const reader = response.body.getReader(); const decoder = new TextDecoder();
   let size = 0, text = "";
@@ -53,13 +54,13 @@ export async function readLimited(response: Response, maxBytes = 1_500_000): Pro
     while (true) {
       const { done, value } = await reader.read(); if (done) break;
       size += value.byteLength;
-      if (size > maxBytes) throw new InputError("Source exceeds the 1.5 MB retrieval limit.");
+      if (size > maxBytes) throw new InputError(limitMessage);
       text += decoder.decode(value, { stream: true });
     }
     return text + decoder.decode();
   } finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
 }
-export async function fetchPublic(raw: string, accept: string, fetcher: typeof fetch = fetch): Promise<{ text: string; url: string; contentType: string }> {
+export async function fetchPublic(raw: string, accept: string, fetcher: typeof fetch = fetch, maxBytes = 1_500_000): Promise<{ text: string; url: string; contentType: string }> {
   let url = publicUrl(raw);
   for (let redirect = 0; redirect < 4; redirect++) {
     await checkDns(url.hostname, fetcher);
@@ -75,7 +76,7 @@ export async function fetchPublic(raw: string, accept: string, fetcher: typeof f
     if (!response.ok) { await response.body?.cancel(); throw new InputError(`Source returned HTTP ${response.status}. Access restrictions are respected.`); }
     const contentType = response.headers.get("content-type") ?? "";
     if (!/(text\/|xml|json|html)/i.test(contentType)) { await response.body?.cancel(); throw new InputError("Only text articles and XML/JSON feeds are supported."); }
-    return { text: await readLimited(response), url: url.toString(), contentType };
+    return { text: await readLimited(response, maxBytes), url: url.toString(), contentType };
   }
   throw new InputError("Source redirects too many times.");
 }

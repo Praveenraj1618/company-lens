@@ -3,6 +3,7 @@ import test from 'node:test';
 import { testDatabase } from './support.mjs';
 import { Repository } from '../db/index.ts';
 import { handleApi } from '../lib/api.ts';
+import { initialSources } from '../lib/catalog.ts';
 import { ingestSource } from '../lib/pipeline.ts';
 const request=(path,method='GET',body,headers={})=>new Request('http://localhost'+path,{method,headers:{'content-type':'application/json',...headers},...(body===undefined?{}:{body:JSON.stringify(body)})});
 
@@ -11,7 +12,7 @@ test('persistent workflow: bootstrap, import, deduplicate, isolate companies, qu
  try {
   assert.equal((await handleApi(request('/api/bootstrap','POST',{}),env)).status,200);
   await handleApi(request('/api/bootstrap','POST',{}),env);
-  let state=await (await handleApi(request('/api/state?company=infosys'),env)).json();assert.equal(state.companies.length,21);assert.equal(state.sources.length,115);assert.equal(state.articles.length,0);
+  let state=await (await handleApi(request('/api/state?company=infosys'),env)).json();assert.equal(state.companies.length,21);assert.equal(state.sources.length,initialSources.length);assert.equal(state.articles.length,0);
   const body={companyId:'infosys',url:'https://example.com/infosys-training',title:'Infosys opens a training centre',text:'Infosys announced a new training centre. The centre will offer courses for employees in software engineering and data analysis. The company has not yet published enrolment figures.'};
   const imported=await handleApi(request('/api/import','POST',body),env);assert.equal(imported.status,201);
   const duplicate=await handleApi(request('/api/import','POST',body),env);assert.equal(duplicate.status,409);
@@ -53,7 +54,7 @@ test('catalog upgrade expands an existing workspace and preserves edited compani
   const company=(await repo.companies()).find(c=>c.id==='infosys');company.aliases=['My verified alias'];await repo.putCompany(company);await repo.toggleSource('et-cfo',false);
   await repo.db.prepare("DELETE FROM companies WHERE id='vee-technologies'").run();await repo.db.prepare("DELETE FROM sources WHERE id='eastmojo'").run();
   await repo.setSetting('catalogVersion','old');await repo.setSetting('initialized','1');await repo.initialize();await repo.initialize();
-  assert.equal((await repo.companies()).length,20);assert.equal((await repo.sources()).length,115);
+  assert.equal((await repo.companies()).length,20);assert.equal((await repo.sources()).length,initialSources.length);
   assert.deepEqual((await repo.companies()).find(c=>c.id==='infosys').aliases,['My verified alias']);assert.equal((await repo.sources()).find(s=>s.id==='et-cfo').enabled,false);
   assert.ok((await repo.companies()).some(c=>c.id==='vee-technologies'));
  } finally {db.close();}

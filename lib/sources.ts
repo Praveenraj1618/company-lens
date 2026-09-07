@@ -32,7 +32,7 @@ export function parseFeed(xml: string, baseUrl: string, language = "en"): Collec
   const parsed = parser.parse(xml);
   const channel = parsed.rss?.channel;
   const entries = channel?.item ?? parsed.feed?.entry ?? parsed["rdf:RDF"]?.item;
-  if (!entries && !channel && !parsed.feed) throw new InputError("This URL did not return an RSS or Atom feed. Choose Public page for an article or archive.");
+  if (!entries && !channel && !parsed.feed) throw new InputError("This URL did not return an RSS or Atom feed. Use Discover feed for a publication, or Public page for one article.");
   return list<Record<string, unknown>>(entries).slice(0, 150).flatMap(item => {
     try {
       const links = list(item.link);
@@ -83,14 +83,44 @@ export function robotsAllows(text: string, path: string): boolean {
   }).sort((a, b) => b.value.length - a.value.length || Number(b.allow) - Number(a.allow));
   return matches[0]?.allow ?? true;
 }
-export async function loadSource(source: Source): Promise<CollectedItem[]> {
-  const u = publicUrl(source.url);
+async function allowedPage(url: string, fetcher: typeof fetch): Promise<void> {
+  const u = publicUrl(url);
   try {
-    const robots = await fetchPublic(new URL("/robots.txt", u).toString(), "text/plain");
+    const robots = await fetchPublic(new URL("/robots.txt", u).toString(), "text/plain", fetcher);
     if (!robotsAllows(robots.text, u.pathname + u.search)) throw new InputError("This source disallows Company Lens in robots.txt.");
   } catch (error) {
     if (!(error instanceof Error && /HTTP 404|HTTP 410/.test(error.message))) throw error;
   }
-  const page = await fetchPublic(source.url, source.kind === "rss" ? "application/rss+xml, application/atom+xml, application/xml, text/xml" : "text/html");
-  return source.kind === "rss" ? parseFeed(page.text, page.url, source.language) : [extractPage(page.text, page.url, source.language)];
+}
+export function discoverFeeds(html: string, baseUrl: string): string[] {
+  const candidates: string[] = [];
+  // Only publisher-advertised links; never guess private APIs or treat a homepage as an article.
+  const clean = html.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "").replace(/<!--[\s\S]*?-->/g, "");
+  for (const tag of clean.match(/<(?:link|a)\b[^>]*>/gi) ?? []) {
+    const attrs = Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*(["'])(.*?)\2/g)].map(m => [m[1].toLowerCase(), decodeEntities(m[3])]));
+    const href = attrs.href || "";
+    const advertised = /application\/(rss|atom)\+xml/i.test(attrs.type || "") || /(?:rss|feeds?)(?:[/.?]|$)|\.xml(?:\?|$)/i.test(href);
+    if (!advertised || /comments?/i.test(href + " " + (attrs.title || ""))) continue;
+    try { candidates.push(publicUrl(new URL(href, baseUrl).toString()).toString()); } catch { /* Ignore unsafe advertised URLs. */ }
+  }
+  return [...new Set(candidates)].filter(url => url !== baseUrl).slice(0, 3);
+}
+export async function loadSource(source: Source, fetcher: typeof fetch = fetch): Promise<CollectedItem[]> {
+  const feedAccept = "application/rss+xml, application/atom+xml, application/xml, text/xml";
+  const loadFeed = async (url: string) => {
+    await allowedPage(url, fetcher);
+    const feed = await fetchPublic(url, feedAccept, fetcher, 4_000_000);
+    return parseFeed(feed.text, feed.url, source.language);
+  };
+  if (source.kind === "rss") return loadFeed(source.url);
+  await allowedPage(source.url, fetcher);
+  const page = await fetchPublic(source.url, "text/html", fetcher);
+  if (source.kind === "web") return [extractPage(page.text, page.url, source.language)];
+  const candidates = discoverFeeds(page.text, page.url);
+  if (!candidates.length) throw new InputError("No public RSS/Atom feed was advertised. Import an accessible article or newsletter excerpt manually; app-only access is not connected.");
+  let lastError = "No readable feed";
+  for (const url of candidates) {
+    try { return await loadFeed(url); } catch (error) { lastError = error instanceof Error ? error.message : "Feed unavailable"; }
+  }
+  throw new InputError(`Advertised feeds could not be read. ${lastError}`);
 }

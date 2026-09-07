@@ -83,11 +83,13 @@ test('model output with an invented supporting quote is rejected',async()=>{
  finally {globalThis.fetch=previous;}
 });
 
-test('regional catalog has 100 Indian and 15 global feeds with valid, unique identifiers and geography',async()=>{
+test('expanded catalog includes all requested technology outlets and regional language sources',async()=>{
  const {initialSources,initialCompanies,REGIONS,sourceZone}=await import('../lib/catalog.ts');
  const {detectLanguage}=await import('../lib/intelligence.ts');
- assert.equal(initialSources.filter(s=>s.region!=='Global').length,100);assert.equal(initialSources.filter(s=>s.region==='Global').length,15);
- assert.equal(new Set(initialSources.map(s=>s.url)).size,115);assert.equal(new Set(initialSources.map(s=>s.id)).size,115);
+ assert.equal(initialSources.filter(s=>s.region!=='Global').length,139);assert.equal(initialSources.filter(s=>s.region==='Global').length,22);
+ assert.equal(new Set(initialSources.map(s=>s.url)).size,initialSources.length);assert.equal(new Set(initialSources.map(s=>s.id)).size,initialSources.length);
+ for(const id of ["wired", "cnet", "engadget", "zdnet", "techradar", "gizmodo", "mashable", "gadgets360", "beebom", "91mobiles", "mysmartprice", "smartprix", "gadgets-now", "gizbot", "fonearena", "et-cio", "techcircle", "express-computer", "enterprise-it-world", "techday-india", "itvarnews", "tech-observer", "economic-times-tech", "livemint-tech", "trak", "siliconindia", "telecomtalk", "hacker-news", "labnol", "techwiser", "windows-latest", "vccircle", "new-indian-express-tech", "yourstory", "analytics-india", "gadgets360-hi", "maalaimalar-tech", "eisamay-tech", "dailyhunt", "way2news", "lokal", "gizbot-ta", "gizbot-te", "gizbot-kn", "gizbot-ml", "gizbot-bn", "techcrunch", "the-verge", "ars-technica", "inc42"])assert.ok(initialSources.some(s=>s.id===id),id);
+ for(const lang of ['en','ta','hi','kn','te','ml'])assert.ok(initialSources.some(s=>s.language===lang),lang);
  for(const s of initialSources){assert.ok(REGIONS.includes(s.region));assert.equal(new URL(s.url).protocol,'https:');assert.equal(s.status,'unfetched');}
  for(const zone of ['North','South','East','West','Central','North East'])assert.ok(initialSources.some(s=>sourceZone(s.region)===zone));
  const vee=initialCompanies.find(c=>c.id==='vee-technologies');assert.ok(matchesCompany('Vee Technologies Pvt Ltd opens a training centre',vee));assert.equal(matchesCompany('Vee speaks about technology at school',vee),false);
@@ -99,4 +101,32 @@ test('public DNS classification keeps public publisher networks while excluding 
  const {publicAddress}=await import('../lib/safety.ts');
  for(const ip of ['192.0.78.24','192.0.78.25','203.0.178.1','2001:4860:4860::8888'])assert.equal(publicAddress(ip),true,ip);
  for(const ip of ['192.0.0.1','192.0.2.1','192.168.1.1','198.51.100.12','203.0.113.5','2001:db8::1','2001:0::1','2002::1','3fff:0::1','::ffff:127.0.0.1'])assert.equal(publicAddress(ip),false,ip);
+});
+
+test('feed discovery uses advertised public links and excludes comments, scripts and local addresses',async()=>{
+ const {discoverFeeds}=await import('../lib/sources.ts');
+ const html='<link rel="alternate" type="application/rss+xml" href="/feed?category=tech&amp;lang=kn"><a href="/comments/feed/">Comments</a><script>"<a href=\'/fake.xml\'>"</script><link type="application/rss+xml" href="https://127.0.0.1/rss"><a href="https://feeds.example.org/news.xml">RSS</a>';
+ assert.deepEqual(discoverFeeds(html,'https://example.com/'),['https://example.com/feed?category=tech&lang=kn','https://feeds.example.org/news.xml']);
+});
+test('discovery collects individual feed records and never substitutes homepage prose',async()=>{
+ const {loadSource}=await import('../lib/sources.ts');
+ const source={url:'https://example.com/',kind:'discovery',language:'kn'};
+ const fetcher=async url=>{
+  const u=new URL(url);
+  if(u.hostname==='cloudflare-dns.com')return Response.json({Status:0,Answer:[{type:1,data:'93.184.216.34'}]});
+  if(u.pathname==='/robots.txt')return new Response('User-agent: *\nDisallow: /private');
+  if(u.pathname==='/feed')return new Response('<rss><channel><item><title>ಕಂಪನಿಯ ಸುದ್ದಿ</title><link>https://example.com/story</link><description>Vee Technologies opens an office.</description></item></channel></rss>',{headers:{'content-type':'application/rss+xml'}});
+  return new Response('<link rel="alternate" type="application/rss+xml" href="/feed"><article>This homepage contains mixed news from many companies.</article>',{headers:{'content-type':'text/html'}});
+ };
+ const items=await loadSource(source,fetcher);assert.equal(items.length,1);assert.equal(items[0].url,'https://example.com/story');assert.equal(items[0].language,'kn');
+ const noFeed=async url=>new URL(url).hostname==='cloudflare-dns.com'?fetcher(url):new Response('<html>No public feed available</html>',{headers:{'content-type':'text/html'}});
+ await assert.rejects(()=>loadSource(source,noFeed),/No public RSS\/Atom/);
+ const denied=async url=>new URL(url).pathname==='/'?new Response('<link type="application/rss+xml" href="/private/feed">',{headers:{'content-type':'text/html'}}):fetcher(url);
+ await assert.rejects(()=>loadSource(source,denied),/disallows Company Lens/);
+});
+test('larger regional RSS responses remain bounded and default page limit is unchanged',async()=>{
+ const body='ಕ'.repeat(600000);
+ await assert.rejects(()=>readLimited(new Response(body)),/1.5 MB/);
+ assert.equal(await readLimited(new Response(body),4000000),body);
+ await assert.rejects(()=>readLimited(new Response('x',{headers:{'content-length':'4000001'}}),4000000),/4 MB/);
 });
